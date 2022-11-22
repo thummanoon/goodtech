@@ -16,6 +16,10 @@ class ChooseType extends StatefulWidget {
 class _ChooseTypeState extends State<ChooseType> {
   var typeUsers = AppConstant.typeUser;
   var typeUserShows = AppConstant.typeUserShows;
+  var pages = <String>[
+    AppConstant.pageAccountUser,
+    AppConstant.pageAccountTeachnic,
+  ];
 
   @override
   void initState() {
@@ -39,7 +43,8 @@ class _ChooseTypeState extends State<ChooseType> {
                     text: 'เลือกชนิดผู้ใช้งาน',
                     textStyle: AppConstant().h2Style(),
                   ),
-                  Container(margin: const EdgeInsets.only(top: 16),
+                  Container(
+                    margin: const EdgeInsets.only(top: 16),
                     width: 250,
                     child: Column(
                       children: [
@@ -65,7 +70,9 @@ class _ChooseTypeState extends State<ChooseType> {
                   WidgetButtom(
                     width: 100,
                     label: 'ยืนยัน',
-                    pressFunc: () {},
+                    pressFunc: () {
+                      Get.toNamed(pages[appController.indexTypeUser.value]);
+                    },
                   )
                 ],
               );
