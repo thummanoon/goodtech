@@ -26,7 +26,7 @@ class Authen extends StatelessWidget {
                     ListView(
                       children: [
                         WidgetLogo(
-                          sizeLogo: boxConstraints.maxWidth * 0.35,
+                          sizeLogo: boxConstraints.maxWidth * 0.50,
                         ),
                         formEmail(),
                         formPassword(appController),

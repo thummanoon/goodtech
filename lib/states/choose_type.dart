@@ -38,7 +38,7 @@ class _ChooseTypeState extends State<ChooseType> {
             builder: (AppController appController) {
               return Column(
                 children: [
-                  WidgetLogo(sizeLogo: boxConstraints.maxWidth * 0.35),
+                  WidgetLogo(sizeLogo: boxConstraints.maxWidth * 0.50),
                   WidgetText(
                     text: 'เลือกชนิดผู้ใช้งาน',
                     textStyle: AppConstant().h2Style(),

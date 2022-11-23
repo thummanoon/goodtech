@@ -11,7 +11,7 @@ class WidgetImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.asset(
-      'images/logo.png',
+      'images/logot.png',
       width: size,
     );
   }
