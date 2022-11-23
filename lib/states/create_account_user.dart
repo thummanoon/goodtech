@@ -112,7 +112,7 @@ class _CreateAccountUserState extends State<CreateAccountUser> {
                           Container(padding:  const EdgeInsets.all(4),
                             decoration: AppConstant().borderCurveBox(),
                             width: 200,
-                            height: 150,
+                            height: 180,
                             child: position == null
                                 ? const WidgetProgress()
                                 : WidgetGoogleMap(
