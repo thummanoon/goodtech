@@ -1,11 +1,22 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
 
 class AppService {
+  Future<void> processCreateNewAccount({
+    required String email,
+    required String password,
+  }) async {
+    await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((value) => null)
+        .catchError((onError) {});
+  }
+
   Future<Position?> processFindPosition({required BuildContext context}) async {
     Position? position;
     bool locationServiceEnable = await Geolocator.isLocationServiceEnabled();
