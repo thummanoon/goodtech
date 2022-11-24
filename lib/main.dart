@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/states/authen.dart';
@@ -10,12 +11,23 @@ var getPages = <GetPage<dynamic>>[
     name: AppConstant.pageAuthen,
     page: () => const Authen(),
   ),
-  GetPage(name: AppConstant.pageAccountUser, page: () => const CreateAccountUser(),),
-  GetPage(name: AppConstant.pageAccountTeachnic, page: () => const CreateAccountTeachnic(),),
+  GetPage(
+    name: AppConstant.pageAccountUser,
+    page: () => const CreateAccountUser(),
+  ),
+  GetPage(
+    name: AppConstant.pageAccountTeachnic,
+    page: () => const CreateAccountTeachnic(),
+  ),
 ];
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp().then((value) {
+    runApp(const MyApp());
+  });
+
+  
 }
 
 class MyApp extends StatelessWidget {

@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
 
@@ -10,11 +12,22 @@ class AppService {
   Future<void> processCreateNewAccount({
     required String email,
     required String password,
+    required BuildContext context,
+    required UserModel userModel,
   }) async {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
-        .then((value) => null)
-        .catchError((onError) {});
+        .then((value) async {
+      String uid = value.user!.uid;
+      print('uid = $uid');
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(uid)
+          .set(userModel.toMap());
+    }).catchError((onError) {
+      AppDialog(context: context)
+          .normalDialog(title: onError.code, detail: onError.message);
+    });
   }
 
   Future<Position?> processFindPosition({required BuildContext context}) async {

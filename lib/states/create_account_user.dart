@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:goodtech/models/user_model.dart';
+import 'package:goodtech/states/main_home.dart';
 import 'package:goodtech/utility/app_constant.dart';
+import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/widgets/widget_buttom.dart';
 import 'package:goodtech/widgets/widget_form.dart';
@@ -145,7 +148,7 @@ class _CreateAccountUserState extends State<CreateAccountUser> {
                             ),
                             WidgetButtom(
                               label: 'ยืนยัน',
-                              pressFunc: () {
+                              pressFunc: () async {
                                 if ((name?.isEmpty ?? true) ||
                                     (surName?.isEmpty ?? true) ||
                                     (address?.isEmpty ?? true) ||
@@ -156,7 +159,27 @@ class _CreateAccountUserState extends State<CreateAccountUser> {
                                       title: 'มีช่องว่าง ?',
                                       detail: 'กรุณากรอกทุกช่อง');
                                 } else {
-                                  
+                                  UserModel userModel = UserModel(
+                                      name: name!,
+                                      surName: surName!,
+                                      address: address!,
+                                      phone: phone!,
+                                      email: email!,
+                                      password: password!,
+                                      typeUser: AppConstant.typeUsers[0]);
+
+                                  print('userModel = ${userModel.toMap()}');
+
+                                  await AppService()
+                                      .processCreateNewAccount(
+                                          email: email!,
+                                          password: password!,
+                                          context: context,
+                                          userModel: userModel)
+                                      .then((value) {
+                                    print('Create Account success');
+                                    Get.offAll(const MainHome());
+                                  });
                                 }
                               },
                             )

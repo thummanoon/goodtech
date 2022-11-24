@@ -14,7 +14,7 @@ class ChooseType extends StatefulWidget {
 }
 
 class _ChooseTypeState extends State<ChooseType> {
-  var typeUsers = AppConstant.typeUser;
+  var typeUsers = AppConstant.typeUsers;
   var typeUserShows = AppConstant.typeUserShows;
   var pages = <String>[
     AppConstant.pageAccountUser,

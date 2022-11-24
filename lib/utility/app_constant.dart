@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppConstant {
-  static var typeUser = <String>[
+  static var typeUsers = <String>[
     'user',
     'technic',
   ];
