@@ -13,6 +13,7 @@ class AppConstant {
   static String pageAuthen = '/authen';
   static String pageAccountUser = '/accountUser';
   static String pageAccountTeachnic = '/accountTeachnic';
+  static String pageMainHome = '/mainhome';
 
   static Color dark = Colors.black;
   static Color bgColor = Colors.white;

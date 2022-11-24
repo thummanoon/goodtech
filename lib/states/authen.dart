@@ -33,7 +33,13 @@ class Authen extends StatelessWidget {
                         buttonLogin()
                       ],
                     ),
-                    buttonCreateAccount()
+                    buttonCreateAccount(),
+                    WidgetIconButton(
+                      iconData: Icons.arrow_back,
+                      pressFunc: () {
+                        Get.back();
+                      },
+                    )
                   ],
                 ),
               );

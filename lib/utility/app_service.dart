@@ -9,6 +9,20 @@ import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
 
 class AppService {
+  bool checkChooseTypeTechnic({required List<bool> listChooses}) {
+    bool result = true;
+
+    for (var element in listChooses) {
+      if (result) {
+        if (element) {
+          result = false;
+        }
+      }
+    }
+
+    return result;
+  }
+
   Future<void> processCreateNewAccount({
     required String email,
     required String password,

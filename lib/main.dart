@@ -4,9 +4,14 @@ import 'package:get/get.dart';
 import 'package:goodtech/states/authen.dart';
 import 'package:goodtech/states/create_account_technic.dart';
 import 'package:goodtech/states/create_account_user.dart';
+import 'package:goodtech/states/main_home.dart';
 import 'package:goodtech/utility/app_constant.dart';
 
 var getPages = <GetPage<dynamic>>[
+  GetPage(
+    name: AppConstant.pageMainHome,
+    page: () => const MainHome(),
+  ),
   GetPage(
     name: AppConstant.pageAuthen,
     page: () => const Authen(),
@@ -26,8 +31,6 @@ Future<void> main() async {
   await Firebase.initializeApp().then((value) {
     runApp(const MyApp());
   });
-
-  
 }
 
 class MyApp extends StatelessWidget {
@@ -37,7 +40,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       getPages: getPages,
-      initialRoute: AppConstant.pageAuthen,
+      initialRoute: AppConstant.pageMainHome,
       theme: ThemeData(
         primarySwatch: Colors.green,
         appBarTheme: AppBarTheme(
