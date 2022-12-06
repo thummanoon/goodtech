@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
+import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/widgets/widget_icon_button.dart';
@@ -94,121 +95,160 @@ class _CreateAccountTeachnicState extends State<CreateAccountTeachnic> {
                     width: boxConstraints.maxWidth,
                     height: boxConstraints.maxHeight -
                         boxConstraints.maxWidth * 0.4,
-                    child: ListView(
-                      children: [
-                        WidgetText(
-                          text: 'ข้อมูลช่าง :',
-                          textStyle: AppConstant().h2Style(),
-                        ),
-                        WidgetForm(
-                          labelWidget: WidgetText(text: 'ชื่อ'),
-                          changeFunc: (p0) {
-                            name = p0.trim();
-                          },
-                        ),
-                        WidgetForm(
-                          labelWidget: WidgetText(text: 'นามสกุล'),
-                          changeFunc: (p0) {
-                            surName = p0.trim();
-                          },
-                        ),
-                        WidgetForm(
-                          labelWidget: WidgetText(text: 'ที่อยู่'),
-                          changeFunc: (p0) {
-                            address = p0.trim();
-                          },
-                        ),
-                        WidgetForm(
-                          textInputType: TextInputType.phone,
-                          labelWidget: WidgetText(text: 'เบอร์โทรศัพท์'),
-                          changeFunc: (p0) {
-                            phone = p0.trim();
-                          },
-                        ),
-                        WidgetForm(
-                          textInputType: TextInputType.emailAddress,
-                          labelWidget: WidgetText(text: 'Email'),
-                          changeFunc: (p0) {
-                            email = p0.trim();
-                          },
-                        ),
-                        WidgetForm(
-                          labelWidget: WidgetText(text: 'Password'),
-                          changeFunc: (p0) {
-                            password = p0.trim();
-                          },
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 16),
-                          child: WidgetText(
-                            text: 'ชนิดของช่าง :',
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          WidgetText(
+                            text: 'ข้อมูลช่าง :',
                             textStyle: AppConstant().h2Style(),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: AppConstant().borderCurveBox(),
-                          width: boxConstraints.maxWidth,
-                          child: typeTechnicModels.isEmpty
-                              ? const WidgetProgress()
-                              : ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const ScrollPhysics(),
-                                  itemCount: typeTechnicModels.length,
-                                  itemBuilder: (context, index) {
-                                    return CheckboxListTile(
-                                      controlAffinity:
-                                          ListTileControlAffinity.leading,
-                                      value: chooseTypeTechnics[index],
-                                      onChanged: (value) {
-                                        chooseTypeTechnics[index] = value!;
-                                        setState(() {});
-                                      },
-                                      title: WidgetText(
-                                          text: typeTechnicModels[index].name),
-                                    );
-                                  },
-                                ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 16),
-                          child: WidgetText(
-                            text: 'พิกัด :',
-                            textStyle: AppConstant().h2Style(),
+                          WidgetForm(
+                            labelWidget: WidgetText(text: 'ชื่อ'),
+                            changeFunc: (p0) {
+                              name = p0.trim();
+                            },
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: AppConstant().borderCurveBox(),
-                          width: boxConstraints.maxWidth * 0.8,
-                          height: boxConstraints.maxWidth * 0.6,
-                          child: position == null
-                              ? const WidgetProgress()
-                              : WidgetGoogleMap(
-                                  lat: position!.latitude,
-                                  lng: position!.longitude),
-                        ),
-                        WidgetButtom(
-                          label: 'ยืนยัน',
-                          pressFunc: () {
-                            if ((name?.isEmpty ?? true) ||
-                                (surName?.isEmpty ?? true) ||
-                                (address?.isEmpty ?? true) ||
-                                (phone?.isEmpty ?? true) ||
-                                (email?.isEmpty ?? true) ||
-                                (password?.isEmpty ?? true)) {
-                              AppDialog(context: context).normalDialog(
-                                  title: 'มีช่องว่าง ?',
-                                  detail: 'กรุณากรอกให้ครบทุกช่อง');
-                            } else if (AppService().checkChooseTypeTechnic(
-                                listChooses: chooseTypeTechnics)) {
-                              AppDialog(context: context).normalDialog(
-                                  title: 'ยังไม่ได้เลือกชนิดของช่าง',
-                                  detail: 'กรุณาเลือกชนิดของช่าง');
-                            } else {}
-                          },
-                        )
-                      ],
+                          WidgetForm(
+                            labelWidget: WidgetText(text: 'นามสกุล'),
+                            changeFunc: (p0) {
+                              surName = p0.trim();
+                            },
+                          ),
+                          WidgetForm(
+                            labelWidget: WidgetText(text: 'ที่อยู่'),
+                            changeFunc: (p0) {
+                              address = p0.trim();
+                            },
+                          ),
+                          WidgetForm(
+                            textInputType: TextInputType.phone,
+                            labelWidget: WidgetText(text: 'เบอร์โทรศัพท์'),
+                            changeFunc: (p0) {
+                              phone = p0.trim();
+                            },
+                          ),
+                          WidgetForm(
+                            textInputType: TextInputType.emailAddress,
+                            labelWidget: WidgetText(text: 'Email'),
+                            changeFunc: (p0) {
+                              email = p0.trim();
+                            },
+                          ),
+                          WidgetForm(
+                            labelWidget: WidgetText(text: 'Password'),
+                            changeFunc: (p0) {
+                              password = p0.trim();
+                            },
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 16),
+                            child: WidgetText(
+                              text: 'ชนิดของช่าง :',
+                              textStyle: AppConstant().h2Style(),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: AppConstant().borderCurveBox(),
+                            width: boxConstraints.maxWidth,
+                            child: typeTechnicModels.isEmpty
+                                ? const WidgetProgress()
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const ScrollPhysics(),
+                                    itemCount: typeTechnicModels.length,
+                                    itemBuilder: (context, index) {
+                                      return CheckboxListTile(
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        value: chooseTypeTechnics[index],
+                                        onChanged: (value) {
+                                          chooseTypeTechnics[index] = value!;
+                                          setState(() {});
+                                        },
+                                        title: WidgetText(
+                                            text: typeTechnicModels[index].name),
+                                      );
+                                    },
+                                  ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 16),
+                            child: WidgetText(
+                              text: 'พิกัด :',
+                              textStyle: AppConstant().h2Style(),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: AppConstant().borderCurveBox(),
+                            width: boxConstraints.maxWidth * 0.8,
+                            height: boxConstraints.maxWidth * 0.6,
+                            child: position == null
+                                ? const WidgetProgress()
+                                : WidgetGoogleMap(
+                                    lat: position!.latitude,
+                                    lng: position!.longitude),
+                          ),
+                          WidgetButtom(
+                            label: 'ยืนยัน',
+                            pressFunc: () {
+                              if ((name?.isEmpty ?? true) ||
+                                  (surName?.isEmpty ?? true) ||
+                                  (address?.isEmpty ?? true) ||
+                                  (phone?.isEmpty ?? true) ||
+                                  (email?.isEmpty ?? true) ||
+                                  (password?.isEmpty ?? true)) {
+                                AppDialog(context: context).normalDialog(
+                                    title: 'มีช่องว่าง ?',
+                                    detail: 'กรุณากรอกให้ครบทุกช่อง');
+                              } else if (AppService().checkChooseTypeTechnic(
+                                  listChooses: chooseTypeTechnics)) {
+                                AppDialog(context: context).normalDialog(
+                                    title: 'ยังไม่ได้เลือกชนิดของช่าง',
+                                    detail: 'กรุณาเลือกชนิดของช่าง');
+                              } else {
+                                print(
+                                    'chooseTypeTechnic ---> $chooseTypeTechnics');
+                    
+                                var skillTechnics = <String>[];
+                    
+                                for (var i = 0;
+                                    i < chooseTypeTechnics.length;
+                                    i++) {
+                                  if (chooseTypeTechnics[i]) {
+                                    skillTechnics.add(typeTechnicModels[i].name);
+                                  }
+                                }
+                                print('skillTechnic --> $skillTechnics');
+                    
+                                UserModel userModel = UserModel(
+                                  name: name!,
+                                  surName: surName!,
+                                  address: address!,
+                                  phone: phone!,
+                                  email: email!,
+                                  password: password!,
+                                  typeUser: AppConstant.typeUsers[1],
+                                  geoPoint: GeoPoint(
+                                      position!.latitude, position!.longitude),
+                                  skillTechnic: skillTechnics,
+                                );
+                    
+                                AppService()
+                                    .processCreateNewAccount(
+                                        email: email!,
+                                        password: password!,
+                                        context: context,
+                                        userModel: userModel)
+                                    .then((value) {
+                                  
+                                });
+                              }
+                            },
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:goodtech/models/user_model.dart';
+import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
 
@@ -37,7 +39,10 @@ class AppService {
       await FirebaseFirestore.instance
           .collection('user')
           .doc(uid)
-          .set(userModel.toMap());
+          .set(userModel.toMap())
+          .then((value) {
+        Get.offAllNamed(AppConstant.pageMainHome);
+      });
     }).catchError((onError) {
       AppDialog(context: context)
           .normalDialog(title: onError.code, detail: onError.message);
