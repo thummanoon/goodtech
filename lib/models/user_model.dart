@@ -48,12 +48,12 @@ class UserModel {
       email: map['email'] ?? '',
       password: map['password'] ?? '',
       typeUser: map['typeUser'] ?? '',
-      skillTechnic: (map['skillTechnic'] ?? []),
+      skillTechnic: List<String>.from(map['skillTechnic'] ?? []),
       geoPoint: (map['geoPoint'] ?? const GeoPoint(0, 0)),
     );
   }
 
-  //skillTechnic: (map['skillTechnic'] ?? []),
+  //skillTechnic: List<String>.from(map['skillTechnic'] ?? []),
   //geoPoint: (map['geoPoint'] ?? const GeoPoint(0, 0)),
   String toJson() => json.encode(toMap());
 
