@@ -9,11 +9,13 @@ class WidgetMenu extends StatelessWidget {
     required this.leadWidget,
     required this.title,
     this.tapFunc,
+    this.subTitle,
   }) : super(key: key);
 
   final Widget leadWidget;
   final String title;
   final Function()? tapFunc;
+  final Widget? subTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class WidgetMenu extends StatelessWidget {
         text: title,
         textStyle: AppConstant().h2Style(),
       ),
+      subtitle: subTitle,
     );
   }
 }

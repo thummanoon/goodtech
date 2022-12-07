@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:goodtech/bodys/main_center.dart';
+import 'package:goodtech/bodys/message_technic.dart';
+import 'package:goodtech/bodys/message_user.dart';
+import 'package:goodtech/bodys/profile_technic.dart';
+import 'package:goodtech/bodys/referance_technic.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
@@ -23,6 +28,21 @@ class _MainHomeState extends State<MainHome> {
   bool load = true;
 
   AppController controller = Get.put(AppController());
+  var bodys = <Widget>[
+    const MainCenter(),
+    const MessageTechnic(),
+    const ProfileTechnic(),
+    const ReferanceTechnic(),
+    const MessageUser(),
+  ];
+
+  var titles = <String>[
+    'หน้าหลัก',
+    'ข่าวสาร',
+    'profile',
+    'referance',
+    'ข่าวสาร',
+  ];
 
   @override
   void initState() {
@@ -40,6 +60,7 @@ class _MainHomeState extends State<MainHome> {
         statusLogin = false;
       } else {
         statusLogin = true;
+        controller.findUserModel(uid: event.uid);
       }
       load = false;
       setState(() {});
@@ -55,7 +76,7 @@ class _MainHomeState extends State<MainHome> {
           return Scaffold(
             appBar: AppBar(
               title: WidgetText(
-                text: 'Main Home',
+                text: titles[appController.indexBody.value],
                 textStyle: AppConstant().h2Style(),
               ),
             ),
@@ -68,9 +89,11 @@ class _MainHomeState extends State<MainHome> {
                         WidgetMenu(
                           leadWidget: const WidgetImage(
                             path: 'images/home.png',
+                            size: 35,
                           ),
                           title: 'หน้าหลัก',
                           tapFunc: () {
+                            appController.indexBody.value = 0;
                             Get.back();
                           },
                         ),
@@ -83,27 +106,35 @@ class _MainHomeState extends State<MainHome> {
                                       WidgetMenu(
                                         leadWidget: const WidgetImage(
                                           path: 'images/messag.png',
+                                          size: 35,
                                         ),
                                         title: 'ข่าวสาร',
+                                        subTitle: const WidgetText(
+                                            text: 'ข่าวสารสำหรับช่าง'),
                                         tapFunc: () {
+                                          appController.indexBody.value = 1;
                                           Get.back();
                                         },
                                       ),
                                       WidgetMenu(
                                         leadWidget: const WidgetImage(
                                           path: 'images/profine.png',
+                                          size: 35,
                                         ),
                                         title: 'profine',
                                         tapFunc: () {
+                                          appController.indexBody.value = 2;
                                           Get.back();
                                         },
                                       ),
                                       WidgetMenu(
                                         leadWidget: const WidgetImage(
                                           path: 'images/referent.png',
+                                          size: 35,
                                         ),
                                         title: 'referent',
                                         tapFunc: () {
+                                          appController.indexBody.value = 3;
                                           Get.back();
                                         },
                                       ),
@@ -114,7 +145,10 @@ class _MainHomeState extends State<MainHome> {
                                       path: 'images/messag.png',
                                     ),
                                     title: 'ข่าวสาร',
+                                    subTitle: const WidgetText(
+                                        text: 'ข่าวสารสำหรับสมาชิก'),
                                     tapFunc: () {
+                                      appController.indexBody.value = 4;
                                       Get.back();
                                     },
                                   )
@@ -127,6 +161,7 @@ class _MainHomeState extends State<MainHome> {
                       ],
                     ),
                   ),
+            body: bodys[appController.indexBody.value],
           );
         });
   }

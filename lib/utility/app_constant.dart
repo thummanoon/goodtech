@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppConstant {
+  static String urlFreeProfile = 'https://firebasestorage.googleapis.com/v0/b/goodtech-9a4a6.appspot.com/o/profile%2F6588977_config_construction_engineer_icon.png?alt=media&token=29151c2d-d733-4d58-81a7-27172adaa0fe';
   static var typeUsers = <String>[
     'user',
     'technic',
@@ -20,8 +21,7 @@ class AppConstant {
 
   BoxDecoration borderCurveBox() {
     return BoxDecoration(
-      border: Border.all(),borderRadius: BorderRadius.circular(20) 
-    );
+        border: Border.all(), borderRadius: BorderRadius.circular(20));
   }
 
   BoxDecoration curveBox() {
@@ -50,11 +50,11 @@ class AppConstant {
     );
   }
 
-  TextStyle h2Style({Color? color}) {
+  TextStyle h2Style({Color? color, FontWeight? fontWeight, double? size}) {
     return TextStyle(
-      fontSize: 20,
+      fontSize: size ?? 20,
       color: color ?? dark,
-      fontWeight: FontWeight.w700,
+      fontWeight: fontWeight ?? FontWeight.w700,
     );
   }
 

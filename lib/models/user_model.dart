@@ -12,6 +12,7 @@ class UserModel {
   final String typeUser;
   final List<String>? skillTechnic;
   final GeoPoint geoPoint;
+  final String? urlProfile;
 
   UserModel({
     required this.name,
@@ -23,6 +24,7 @@ class UserModel {
     required this.typeUser,
     this.skillTechnic,
     required this.geoPoint,
+    this.urlProfile,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,6 +38,7 @@ class UserModel {
       'typeUser': typeUser,
       'skillTechnic': skillTechnic,
       'geoPoint': geoPoint,
+      'urlProfile': urlProfile,
     };
   }
 
@@ -50,6 +53,7 @@ class UserModel {
       typeUser: map['typeUser'] ?? '',
       skillTechnic: List<String>.from(map['skillTechnic'] ?? []),
       geoPoint: (map['geoPoint'] ?? const GeoPoint(0, 0)),
+      urlProfile: map['urlProfile'] ?? '',
     );
   }
 
