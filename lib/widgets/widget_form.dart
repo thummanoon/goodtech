@@ -9,6 +9,7 @@ class WidgetForm extends StatelessWidget {
     this.obscecu,
     this.labelWidget,
     this.textInputType,
+    this.textEditingController,
   }) : super(key: key);
 
   final String? hint;
@@ -17,17 +18,21 @@ class WidgetForm extends StatelessWidget {
   final bool? obscecu;
   final Widget? labelWidget;
   final TextInputType? textInputType;
- 
+  final TextEditingController? textEditingController;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 16),
       width: 250,
       height: 40,
-      child: TextFormField(keyboardType: textInputType,
+      child: TextFormField(
+        controller: textEditingController,
+        keyboardType: textInputType,
         obscureText: obscecu ?? false,
         onChanged: changeFunc,
-        decoration: InputDecoration(label: labelWidget ,
+        decoration: InputDecoration(
+          label: labelWidget,
           suffixIcon: suffixWidget,
           filled: true,
           contentPadding:

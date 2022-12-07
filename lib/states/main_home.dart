@@ -48,6 +48,7 @@ class _MainHomeState extends State<MainHome> {
   void initState() {
     super.initState();
     checkLogin();
+    controller.readAllTypeUser();
   }
 
   Future<void> checkLogin() async {

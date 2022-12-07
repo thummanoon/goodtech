@@ -5,6 +5,7 @@ import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/widgets/widget_buttom.dart';
 import 'package:goodtech/widgets/widget_google_map.dart';
+import 'package:goodtech/widgets/widget_show_head.dart';
 import 'package:goodtech/widgets/widget_show_profile.dart';
 import 'package:goodtech/widgets/widget_text.dart';
 
@@ -25,7 +26,7 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
           return ListView(
             children: [
               imageProfile(appController),
-              showHead(head: 'ข้อมูลทั่วไป :'),
+              const WidgetShoehead(head: 'ข้อมูลทั่วไป :'),
               showTitle(
                   head: 'ชื่อ :', value: appController.userModels[0].name),
               showTitle(
@@ -33,9 +34,9 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
                   value: appController.userModels[0].address),
               showTitle(
                   head: 'เบอร์โทร :', value: appController.userModels[0].phone),
-              showHead(head: 'Skill Technic :'),
+              const WidgetShoehead(head: 'Skill Technic :'),
               listskill(appController),
-              showHead(head: 'แผนที่ร้าน :'),
+              const WidgetShoehead(head: 'แผนที่ร้าน :'),
               showmap(appController),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -92,15 +93,7 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
     );
   }
 
-  Padding showHead({required String head}) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
-      child: WidgetText(
-        text: head,
-        textStyle: AppConstant().h2Style(),
-      ),
-    );
-  }
+  
 
   Padding showTitle({required String head, required String value}) {
     return Padding(

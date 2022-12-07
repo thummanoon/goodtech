@@ -9,8 +9,19 @@ import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AppService {
+  Future<File?> processTakePhoto({required ImageSource source}) async {
+    File? file;
+    var result = await ImagePicker()
+        .pickImage(source: source, maxWidth: 800, maxHeight: 800);
+    if (result != null) {
+      file = File(result.path);
+    }
+    return file;
+  }
+
   bool checkChooseTypeTechnic({required List<bool> listChooses}) {
     bool result = true;
 
