@@ -83,7 +83,7 @@ class _MainHomeState extends State<MainHome> {
             ),
             drawer: load
                 ? const WidgetProgress()
-                : Drawer(
+                :  Drawer(
                     child: Column(
                       children: [
                         headDrawer(appController),

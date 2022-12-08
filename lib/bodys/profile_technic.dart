@@ -5,6 +5,7 @@ import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/widgets/widget_buttom.dart';
 import 'package:goodtech/widgets/widget_google_map.dart';
+import 'package:goodtech/widgets/widget_progress.dart';
 import 'package:goodtech/widgets/widget_show_head.dart';
 import 'package:goodtech/widgets/widget_show_profile.dart';
 import 'package:goodtech/widgets/widget_text.dart';
@@ -23,38 +24,45 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
         init: AppController(),
         builder: (AppController appController) {
           print('userModel ==> ${appController.userModels}');
-          return ListView(
-            children: [
-              imageProfile(appController),
-              const WidgetShoehead(head: 'ข้อมูลทั่วไป :'),
-              showTitle(
-                  head: 'ชื่อ :', value: appController.userModels[0].name),
-              showTitle(
-                  head: 'ที่อยู่ :',
-                  value: appController.userModels[0].address),
-              showTitle(
-                  head: 'เบอร์โทร :', value: appController.userModels[0].phone),
-              const WidgetShoehead(head: 'Skill Technic :'),
-              listskill(appController),
-              const WidgetShoehead(head: 'แผนที่ร้าน :'),
-              showmap(appController),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 30, bottom: 30),
-                    width: 250,
-                    child: WidgetButtom(
-                      label: 'Edit Profile',
-                      pressFunc: () {
-                        Get.to(const EditProfileTechnic());
-                      },
-                    ),
-                  ),
-                ],
-              )
-            ],
-          );
+          return appController.userModels.isEmpty
+              ? const WidgetProgress()
+              : ListView(
+                  children: [
+                    imageProfile(appController),
+                    const WidgetShoehead(head: 'ข้อมูลทั่วไป :'),
+                    showTitle(
+                        head: 'ชื่อ :',
+                        value: appController.userModels[0].name),
+                    showTitle(
+                        head: 'ที่อยู่ :',
+                        value: appController.userModels[0].address),
+                    showTitle(
+                        head: 'เบอร์โทร :',
+                        value: appController.userModels[0].phone),
+                    const WidgetShoehead(head: 'Skill Technic :'),
+                    listskill(appController),
+                    const WidgetShoehead(head: 'แผนที่ร้าน :'),
+                    showmap(appController),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 30, bottom: 30),
+                          width: 250,
+                          child: WidgetButtom(
+                            label: 'Edit Profile',
+                            pressFunc: () {
+                              Get.to(const EditProfileTechnic())!.then((value) {
+                                appController.findUserModel(
+                                    uid: appController.uidLogins[0]);
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                );
         });
   }
 
@@ -93,12 +101,10 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
     );
   }
 
-  
-
   Padding showTitle({required String head, required String value}) {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-      child: Row(
+      child: Row(crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 2,

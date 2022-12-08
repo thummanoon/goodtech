@@ -30,6 +30,9 @@ class AppController extends GetxController {
   }
 
   Future<void> findUserModel({required String uid}) async {
+    if (userModels.isNotEmpty) {
+      userModels.clear();
+    }
     await FirebaseFirestore.instance
         .collection('user')
         .doc(uid)

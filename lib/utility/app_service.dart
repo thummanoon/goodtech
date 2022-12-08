@@ -24,6 +24,7 @@ class AppService {
     await uploadTask.whenComplete(() async {
       await reference.getDownloadURL().then((value) {
         urlImage = value.toString();
+        appController.files.clear();
       });
     });
     return urlImage;
