@@ -17,6 +17,10 @@ class AppController extends GetxController {
   RxList<String> typeUsers = <String>[].obs;
 
   Future<void> readAllTypeUser() async {
+    if (typeUsers.isNotEmpty) {
+      typeUsers.clear();
+    }
+
     await FirebaseFirestore.instance
         .collection('typeteachnic')
         .get()

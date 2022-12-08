@@ -55,6 +55,7 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
                               Get.to(const EditProfileTechnic())!.then((value) {
                                 appController.findUserModel(
                                     uid: appController.uidLogins[0]);
+                                appController.readAllTypeUser();
                               });
                             },
                           ),
@@ -104,7 +105,8 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
   Padding showTitle({required String head, required String value}) {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             flex: 2,
