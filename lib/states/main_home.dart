@@ -49,6 +49,7 @@ class _MainHomeState extends State<MainHome> {
     super.initState();
     checkLogin();
     controller.readAllTypeUser();
+    controller.readAllReferance();
   }
 
   Future<void> checkLogin() async {
@@ -83,7 +84,7 @@ class _MainHomeState extends State<MainHome> {
             ),
             drawer: load
                 ? const WidgetProgress()
-                :  Drawer(
+                : Drawer(
                     child: Column(
                       children: [
                         headDrawer(appController),

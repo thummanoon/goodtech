@@ -3,18 +3,42 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:goodtech/models/referance_modal.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
 import 'package:goodtech/models/user_model.dart';
 
 class AppController extends GetxController {
   RxBool redEye = true.obs;
   RxInt indexTypeUser = 0.obs;
+  RxInt indexBody = 0.obs;
+  RxBool loadReferance = true.obs;
+
   RxList<UserModel> userModelLogins = <UserModel>[].obs;
   RxList<String> uidLogins = <String>[].obs;
-  RxInt indexBody = 0.obs;
   RxList<UserModel> userModels = <UserModel>[].obs;
   RxList<File> files = <File>[].obs;
   RxList<String> typeUsers = <String>[].obs;
+  RxList<ReferanceModel> referanceModels = <ReferanceModel>[].obs;
+
+  Future<void> readAllReferance() async {
+    if (referanceModels.isNotEmpty) {
+      referanceModels.clear();
+    }
+
+    await FirebaseFirestore.instance
+        .collection('referance')
+        .get()
+        .then((value) {
+      loadReferance.value = false;
+
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          ReferanceModel model = ReferanceModel.fromMap(element.data());
+          referanceModels.add(model);
+        }
+      }
+    });
+  }
 
   Future<void> readAllTypeUser() async {
     if (typeUsers.isNotEmpty) {
