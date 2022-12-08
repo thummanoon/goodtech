@@ -10,6 +10,7 @@ class AppController extends GetxController {
   RxBool redEye = true.obs;
   RxInt indexTypeUser = 0.obs;
   RxList<UserModel> userModelLogins = <UserModel>[].obs;
+  RxList<String> uidLogins = <String>[].obs;
   RxInt indexBody = 0.obs;
   RxList<UserModel> userModels = <UserModel>[].obs;
   RxList<File> files = <File>[].obs;
@@ -42,11 +43,13 @@ class AppController extends GetxController {
   Future<void> findUserModelLogin() async {
     if (userModelLogins.isNotEmpty) {
       userModelLogins.clear();
+      uidLogins.clear();
     }
 
     var user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
+      uidLogins.add(user.uid);
       await FirebaseFirestore.instance
           .collection('user')
           .doc(user!.uid)

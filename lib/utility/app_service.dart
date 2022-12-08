@@ -2,16 +2,33 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/utility/app_constant.dart';
+import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AppService {
+  Future<String?> processUploadImage({required String path}) async {
+    AppController appController = Get.put(AppController());
+    String? urlImage;
+
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference reference = storage.ref().child(path);
+    UploadTask uploadTask = reference.putFile(appController.files[0]);
+    await uploadTask.whenComplete(() async {
+      await reference.getDownloadURL().then((value) {
+        urlImage = value.toString();
+      });
+    });
+    return urlImage;
+  }
+
   Future<File?> processTakePhoto({required ImageSource source}) async {
     File? file;
     var result = await ImagePicker()
