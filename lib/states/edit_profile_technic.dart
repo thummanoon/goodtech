@@ -127,8 +127,8 @@ class _EditProfileTechnicState extends State<EditProfileTechnic> {
     );
   }
 
-  Row dropdownAddSkill(AppController appController) {
-    return Row(
+  Widget dropdownAddSkill(AppController appController) {
+    return appController.typeUsers.isEmpty ? const SizedBox() : Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
@@ -157,7 +157,18 @@ class _EditProfileTechnicState extends State<EditProfileTechnic> {
         WidgetIconButton(
           iconData: Icons.save,
           iconColor: Colors.green,
-          pressFunc: () {},
+          pressFunc: () {
+            if (chooseSkill != null) {
+              print('chooseSkill --> $chooseSkill');
+              print(
+                  'skill ก่อนเพิ่ม --> ${appController.userModels[0].skillTechnic}');
+              var skills = appController.userModels[0].skillTechnic;
+              skills?.add(chooseSkill!);
+              print('skills --> $skills');
+              map['skillTechnic'] = skills;
+              processSaveProfile();
+            }
+          },
         )
       ],
     );
@@ -316,7 +327,7 @@ class _EditProfileTechnicState extends State<EditProfileTechnic> {
         .doc(controller.uidLogins[0])
         .update(map)
         .then((value) {
-      controller.findUserModelLogin();
+      // controller.findUserModelLogin();
       controller.findUserModel(uid: controller.uidLogins[0]);
       Get.back();
     });
