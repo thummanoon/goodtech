@@ -40,6 +40,29 @@ class AppController extends GetxController {
     });
   }
 
+  Future<void> readTechReferance() async {
+    if (referanceModels.isNotEmpty) {
+      referanceModels.clear();
+    }
+
+    var user = FirebaseAuth.instance.currentUser;
+
+    await FirebaseFirestore.instance
+        .collection('referance')
+        .where('uidTechnic', isEqualTo: user!.uid)
+        .get()
+        .then((value) {
+      loadReferance.value = false;
+
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          ReferanceModel model = ReferanceModel.fromMap(element.data());
+          referanceModels.add(model);
+        }
+      }
+    });
+  }
+
   Future<void> readAllTypeUser() async {
     if (typeUsers.isNotEmpty) {
       typeUsers.clear();
