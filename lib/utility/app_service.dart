@@ -12,8 +12,14 @@ import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class AppService {
+  String dateTimeToString({required DateTime dateTime}) {
+    DateFormat dateFormat = DateFormat('dd MMM yyyy');
+    return dateFormat.format(dateTime);
+  }
+
   Future<String?> processUploadImage({required String path}) async {
     AppController appController = Get.put(AppController());
     String? urlImage;

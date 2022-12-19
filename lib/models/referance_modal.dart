@@ -8,12 +8,14 @@ class ReferanceModel {
   final String detail;
   final String uidTechnic;
   final Timestamp timestampJob;
+  final Timestamp timestampUpdate;
   ReferanceModel({
     required this.urlJob,
     required this.nameJob,
     required this.detail,
     required this.uidTechnic,
     required this.timestampJob,
+    required this.timestampUpdate,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +25,7 @@ class ReferanceModel {
       'detail': detail,
       'uidTechnic': uidTechnic,
       'timestampJob': timestampJob,
+      'timestampUpdate': timestampUpdate,
     };
   }
 
@@ -33,10 +36,12 @@ class ReferanceModel {
       detail: map['detail'] ?? '',
       uidTechnic: map['uidTechnic'] ?? '',
       timestampJob: (map['timestampJob']),
+      timestampUpdate: (map['timestampUpdate']),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory ReferanceModel.fromJson(String source) => ReferanceModel.fromMap(json.decode(source));
+  factory ReferanceModel.fromJson(String source) =>
+      ReferanceModel.fromMap(json.decode(source));
 }
