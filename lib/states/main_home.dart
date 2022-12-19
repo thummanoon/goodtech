@@ -75,7 +75,7 @@ class _MainHomeState extends State<MainHome> {
         init: AppController(),
         builder: (AppController appController) {
           print('current userModel ---> ${appController.userModelLogins}');
-          return Scaffold(
+          return Scaffold(backgroundColor: AppConstant.bgColor,
             appBar: AppBar(
               title: WidgetText(
                 text: titles[appController.indexBody.value],
