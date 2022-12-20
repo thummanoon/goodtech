@@ -49,7 +49,7 @@ class _MainHomeState extends State<MainHome> {
     super.initState();
     checkLogin();
     controller.readAllTypeUser();
-    controller.readAllReferance();
+    // controller.readAllReferance();
   }
 
   Future<void> checkLogin() async {

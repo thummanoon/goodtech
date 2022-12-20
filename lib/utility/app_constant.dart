@@ -18,6 +18,8 @@ class AppConstant {
 
   static Color dark = Colors.black;
   static Color bgColor = Colors.white;
+   static Color cardColor = Color.fromARGB(255, 154, 220, 129);
+
 
   BoxDecoration borderCurveBox() {
     return BoxDecoration(
