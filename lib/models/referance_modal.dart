@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:goodtech/utility/app_constant.dart';
 
 class ReferanceModel {
   final String urlJob;
@@ -9,6 +10,9 @@ class ReferanceModel {
   final String uidTechnic;
   final Timestamp timestampJob;
   final Timestamp timestampUpdate;
+  final String nameTechnic;
+  final String urlImageTechnic;
+
   ReferanceModel({
     required this.urlJob,
     required this.nameJob,
@@ -16,6 +20,8 @@ class ReferanceModel {
     required this.uidTechnic,
     required this.timestampJob,
     required this.timestampUpdate,
+    required this.nameTechnic,
+    required this.urlImageTechnic,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,6 +32,8 @@ class ReferanceModel {
       'uidTechnic': uidTechnic,
       'timestampJob': timestampJob,
       'timestampUpdate': timestampUpdate,
+      'nameTechnic': nameTechnic,
+      'urlImageTechnic': urlImageTechnic,
     };
   }
 
@@ -37,8 +45,13 @@ class ReferanceModel {
       uidTechnic: map['uidTechnic'] ?? '',
       timestampJob: (map['timestampJob']),
       timestampUpdate: (map['timestampUpdate']),
+      nameTechnic: map['nameTechnic'] ?? 'NameTechnic',
+      urlImageTechnic: map['urlImageTechnic'] ?? AppConstant.urlFreeProfile,
     );
   }
+
+  // timestampJob: (map['timestampJob']),
+  // timestampUpdate: (map['timestampUpdate']),
 
   String toJson() => json.encode(toMap());
 

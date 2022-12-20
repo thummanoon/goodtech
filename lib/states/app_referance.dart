@@ -256,7 +256,11 @@ class _AddReferanceState extends State<AddReferance> {
           detail: detail!,
           uidTechnic: controller.uidLogins[0],
           timestampJob: timestamp!,
-          timestampUpdate: Timestamp.fromDate(DateTime.now()));
+          timestampUpdate: Timestamp.fromDate(DateTime.now()),
+          nameTechnic: controller.userModelLogins[0].name,
+          urlImageTechnic: controller.userModelLogins[0].urlProfile!.isEmpty
+              ? AppConstant.urlFreeProfile
+              : controller.userModelLogins[0].urlProfile!);
 
       await FirebaseFirestore.instance
           .collection('referance')

@@ -16,6 +16,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
+  Future<UserModel> fineUserModel({required String uid}) async {
+    var result =
+        await FirebaseFirestore.instance.collection('user').doc(uid).get();
+    UserModel userModel = UserModel.fromMap(result.data()!);
+    return userModel;
+  }
+
   String cutWord({required String word, required int length}) {
     String result = word;
     if (result.length >= length) {
