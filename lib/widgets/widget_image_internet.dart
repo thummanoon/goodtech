@@ -6,19 +6,23 @@ class WidgetImageInternet extends StatelessWidget {
     required this.urlPath,
     this.width,
     this.height,
+    this.tapFunc,
   }) : super(key: key);
 
   final String urlPath;
   final double? width;
   final double? height;
+  final Function()? tapFunc;
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      urlPath,
-      fit: BoxFit.cover,
-      width: width,
-      height: height,
+    return InkWell(onTap: tapFunc,
+      child: Image.network(
+        urlPath,
+        fit: BoxFit.cover,
+        width: width,
+        height: height,
+      ),
     );
   }
 }

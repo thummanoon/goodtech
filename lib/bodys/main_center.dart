@@ -10,6 +10,7 @@ import 'package:goodtech/widgets/widget_progress.dart';
 
 import 'package:goodtech/widgets/widget_show_head.dart';
 import 'package:goodtech/widgets/widget_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainCenter extends StatefulWidget {
   const MainCenter({Key? key}) : super(key: key);
@@ -34,7 +35,18 @@ class _MainCenterState extends State<MainCenter> {
 
     var widgets = <Widget>[];
     for (var element in controller.bannerModels) {
-      widgets.add(WidgetImageInternet(urlPath: element.image));
+      widgets.add(
+        WidgetImageInternet(
+          urlPath: element.image,
+          tapFunc: () async {
+            String url = element.link;
+            print('url ==> $url');
+
+            Uri uri = Uri.parse(url);
+            await canLaunchUrl(uri) ? await launchUrl(uri) : throw 'cannot OpenUrl' ;
+          },
+        ),
+      );
     }
 
     return widgets;
@@ -118,7 +130,9 @@ class _MainCenterState extends State<MainCenter> {
                             ),
                             Row(
                               children: [
-                                WidgetImageInternet(width: 48,height: 48,
+                                WidgetImageInternet(
+                                    width: 48,
+                                    height: 48,
                                     urlPath: appController
                                         .referanceModels[index]
                                         .urlImageTechnic),
@@ -151,7 +165,8 @@ class _MainCenterState extends State<MainCenter> {
             itemCount: appController.technicUserModels.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 10 / 12, crossAxisCount: 3),
-            itemBuilder: (context, index) => Card(elevation: 8,
+            itemBuilder: (context, index) => Card(
+              elevation: 8,
               // color: AppConstant.cardColor,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
