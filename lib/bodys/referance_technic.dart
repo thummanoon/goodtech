@@ -42,75 +42,7 @@ class _ReferanceTechnicState extends State<ReferanceTechnic> {
                       ? const WidgetProgress()
                       : appController.referanceModels.isEmpty
                           ? const WidgetFalsePage(label: 'No Referance')
-                          : ListView.builder(
-                              itemCount: appController.referanceModels.length,
-                              itemBuilder: (context, index) => Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 4),
-                                        width: boxConstraints.maxWidth * 0.4,
-                                        height: boxConstraints.maxWidth * 0.3,
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: WidgetImageInternet(
-                                              urlPath: appController
-                                                  .referanceModels[index]
-                                                  .urlJob),
-                                        ),
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 4),
-                                        width: boxConstraints.maxWidth * 0.6,
-                                        height: boxConstraints.maxWidth * 0.3,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            WidgetText(
-                                                text: AppService().cutWord(word: appController
-                                                    .referanceModels[index]
-                                                    .nameJob, length: 25),
-                                                textStyle: AppConstant()
-                                                    .h3Style(
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                            WidgetText(
-                                                text: AppService().cutWord(
-                                                    word: appController
-                                                        .referanceModels[index]
-                                                        .detail,
-                                                    length: 80)),
-                                            const Spacer(),
-                                            WidgetText(
-                                              text:
-                                                  AppService().dateTimeToString(
-                                                dateTime: appController
-                                                    .referanceModels[index]
-                                                    .timestampJob
-                                                    .toDate(),
-                                              ),
-                                              textStyle: AppConstant().h3Style(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Divider(
-                                    color: AppConstant.dark,
-                                    thickness: 1,
-                                  ),
-                                ],
-                              ),
-                            ),
+                          : listReferance(appController, boxConstraints),
                   Positioned(
                     bottom: 8,
                     right: 8,
@@ -129,4 +61,76 @@ class _ReferanceTechnicState extends State<ReferanceTechnic> {
           });
     });
   }
+
+  ListView listReferance(AppController appController, BoxConstraints boxConstraints) {
+    return ListView.builder(
+                            itemCount: appController.referanceModels.length,
+                            itemBuilder: (context, index) => Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 4),
+                                      width: boxConstraints.maxWidth * 0.4,
+                                      height: boxConstraints.maxWidth * 0.3,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10),
+                                        child: WidgetImageInternet(
+                                            urlPath: appController
+                                                .referanceModels[index]
+                                                .urlJob),
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 4),
+                                      width: boxConstraints.maxWidth * 0.6,
+                                      height: boxConstraints.maxWidth * 0.3,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          WidgetText(
+                                              text: AppService().cutWord(word: appController
+                                                  .referanceModels[index]
+                                                  .nameJob, length: 25),
+                                              textStyle: AppConstant()
+                                                  .h3Style(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                          WidgetText(
+                                              text: AppService().cutWord(
+                                                  word: appController
+                                                      .referanceModels[index]
+                                                      .detail,
+                                                  length: 80)),
+                                          const Spacer(),
+                                          WidgetText(
+                                            text:
+                                                AppService().dateTimeToString(
+                                              dateTime: appController
+                                                  .referanceModels[index]
+                                                  .timestampJob
+                                                  .toDate(),
+                                            ),
+                                            textStyle: AppConstant().h3Style(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(
+                                  color: AppConstant.dark,
+                                  thickness: 1,
+                                ),
+                              ],
+                            ),
+                          );
+  } //end List
 }

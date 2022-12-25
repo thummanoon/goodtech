@@ -14,16 +14,16 @@ class AppController extends GetxController {
   RxInt indexTypeUser = 0.obs;
   RxInt indexBody = 0.obs;
   RxBool loadReferance = true.obs;
-
   RxList<UserModel> userModelLogins = <UserModel>[].obs;
   RxList<String> uidLogins = <String>[].obs;
   RxList<UserModel> userModels = <UserModel>[].obs;
   RxList<File> files = <File>[].obs;
   RxList<String> typeUsers = <String>[].obs;
   RxList<ReferanceModel> referanceModels = <ReferanceModel>[].obs;
- 
   RxList<BannerModel> bannerModels = <BannerModel>[].obs;
   RxList<UserModel> technicUserModels = <UserModel>[].obs;
+
+  RxList<String> messageChats = <String>[].obs;
 
   Future<void> readTechnicUserModel() async {
     if (technicUserModels.isNotEmpty) {
@@ -58,7 +58,6 @@ class AppController extends GetxController {
   Future<void> readAllReferance() async {
     if (referanceModels.isNotEmpty) {
       referanceModels.clear();
-      
     }
 
     await FirebaseFirestore.instance
@@ -71,23 +70,27 @@ class AppController extends GetxController {
         for (var element in value.docs) {
           ReferanceModel model = ReferanceModel.fromMap(element.data());
           referanceModels.add(model);
-
-          
         }
       }
     });
   }
 
-  Future<void> readTechReferance() async {
+  Future<void> readTechReferance({String? uidTechnic}) async {
+    var user = FirebaseAuth.instance.currentUser;
+
+    String uid = user!.uid;
+
+    if (uidTechnic != null) {
+      uid = uidTechnic;
+    }
+
     if (referanceModels.isNotEmpty) {
       referanceModels.clear();
     }
 
-    var user = FirebaseAuth.instance.currentUser;
-
     await FirebaseFirestore.instance
         .collection('referance')
-        .where('uidTechnic', isEqualTo: user!.uid)
+        .where('uidTechnic', isEqualTo: uid)
         .get()
         .then((value) {
       loadReferance.value = false;

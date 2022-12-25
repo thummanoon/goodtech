@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/bodys/main_center.dart';
@@ -9,6 +10,7 @@ import 'package:goodtech/bodys/referance_technic.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
+import 'package:goodtech/utility/app_service.dart';
 import 'package:goodtech/widgets/widget_buttom.dart';
 import 'package:goodtech/widgets/widget_image.dart';
 import 'package:goodtech/widgets/widget_menu.dart';
@@ -37,7 +39,7 @@ class _MainHomeState extends State<MainHome> {
   ];
 
   var titles = <String>[
-    'หน้าหลัก',
+    'หน้าแรก',
     'ข่าวสาร',
     'profile',
     'referance',
@@ -49,7 +51,6 @@ class _MainHomeState extends State<MainHome> {
     super.initState();
     checkLogin();
     controller.readAllTypeUser();
-    
   }
 
   Future<void> checkLogin() async {
@@ -57,12 +58,22 @@ class _MainHomeState extends State<MainHome> {
     await controller.findUserModelLogin().then((value) =>
         print('userModelLogins  last --> ${controller.userModelLogins}'));
 
-    FirebaseAuth.instance.authStateChanges().listen((event) {
+    FirebaseAuth.instance.authStateChanges().listen((event) async {
       if (event == null) {
         statusLogin = false;
       } else {
         statusLogin = true;
         controller.findUserModel(uid: event.uid);
+
+        FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+        String? token = await firebaseMessaging.getToken();
+        print('##25dec token ---> $token');
+
+        AppService().processUploadToken(token: token!);
+
+       
+
+
       }
       load = false;
       setState(() {});
@@ -75,7 +86,8 @@ class _MainHomeState extends State<MainHome> {
         init: AppController(),
         builder: (AppController appController) {
           print('current userModel ---> ${appController.userModelLogins}');
-          return Scaffold(backgroundColor: AppConstant.bgColor,
+          return Scaffold(
+            backgroundColor: AppConstant.bgColor,
             appBar: AppBar(
               title: WidgetText(
                 text: titles[appController.indexBody.value],
@@ -93,7 +105,7 @@ class _MainHomeState extends State<MainHome> {
                             path: 'images/home.png',
                             size: 35,
                           ),
-                          title: 'หน้าหลัก',
+                          title: 'หน้าแรก',
                           tapFunc: () {
                             appController.indexBody.value = 0;
                             Get.back();

@@ -35,7 +35,7 @@ class AppDialog {
           firstBotton ?? const SizedBox(),
           secondBotton ??
               WidgetTextButton(
-                label: 'OK',
+                label: firstBotton == null ? 'OK' : 'Cancel',
                 pressFunc: () {
                   Get.back();
                 },

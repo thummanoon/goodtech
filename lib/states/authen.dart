@@ -30,26 +30,31 @@ class _AuthenState extends State<Authen> {
             init: AppController(),
             builder: (AppController appController) {
               return SafeArea(
-                child: Stack(
-                  children: [
-                    ListView(
-                      children: [
-                        WidgetLogo(
-                          sizeLogo: boxConstraints.maxWidth * 0.50,
-                        ),
-                        formEmail(),
-                        formPassword(appController),
-                        buttonLogin()
-                      ],
-                    ),
-                    buttonCreateAccount(),
-                    WidgetIconButton(
-                      iconData: Icons.arrow_back,
-                      pressFunc: () {
-                        Get.back();
-                      },
-                    )
-                  ],
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () =>
+                      FocusScope.of(context).requestFocus(FocusScopeNode()),
+                  child: Stack(
+                    children: [
+                      ListView(
+                        children: [
+                          WidgetLogo(
+                            sizeLogo: boxConstraints.maxWidth * 0.50,
+                          ),
+                          formEmail(),
+                          formPassword(appController),
+                          buttonLogin()
+                        ],
+                      ),
+                      buttonCreateAccount(),
+                      WidgetIconButton(
+                        iconData: Icons.arrow_back,
+                        pressFunc: () {
+                          Get.back();
+                        },
+                      )
+                    ],
+                  ),
                 ),
               );
             });

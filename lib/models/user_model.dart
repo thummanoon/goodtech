@@ -13,7 +13,7 @@ class UserModel {
   final List<String>? skillTechnic;
   final GeoPoint geoPoint;
   final String? urlProfile;
-  
+  final String? token;
 
   UserModel({
     required this.name,
@@ -26,6 +26,7 @@ class UserModel {
     this.skillTechnic,
     required this.geoPoint,
     this.urlProfile,
+    this.token,
   });
 
   Map<String, dynamic> toMap() {
@@ -40,6 +41,7 @@ class UserModel {
       'skillTechnic': skillTechnic,
       'geoPoint': geoPoint,
       'urlProfile': urlProfile,
+      'token': token,
     };
   }
 
@@ -55,11 +57,15 @@ class UserModel {
       skillTechnic: List<String>.from(map['skillTechnic'] ?? []),
       geoPoint: (map['geoPoint'] ?? const GeoPoint(0, 0)),
       urlProfile: map['urlProfile'] ?? '',
+      token: map['token'] ??  '',
     );
   }
 
   //skillTechnic: List<String>.from(map['skillTechnic'] ?? []),
   //geoPoint: (map['geoPoint'] ?? const GeoPoint(0, 0)),
+  // urlProfile: map['urlProfile'] ?? '',
+      // token: map['token'] ??  '',
+    
   String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) =>

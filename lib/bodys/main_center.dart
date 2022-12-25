@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/user_model.dart';
+import 'package:goodtech/states/authen.dart';
+import 'package:goodtech/states/display_profile_technic.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
+import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/utility/app_service.dart';
 import 'package:goodtech/widgets/widget_image_internet.dart';
 import 'package:goodtech/widgets/widget_progress.dart';
 
 import 'package:goodtech/widgets/widget_show_head.dart';
 import 'package:goodtech/widgets/widget_text.dart';
+import 'package:goodtech/widgets/widget_text_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MainCenter extends StatefulWidget {
@@ -43,7 +47,9 @@ class _MainCenterState extends State<MainCenter> {
             print('url ==> $url');
 
             Uri uri = Uri.parse(url);
-            await canLaunchUrl(uri) ? await launchUrl(uri) : throw 'cannot OpenUrl' ;
+            await canLaunchUrl(uri)
+                ? await launchUrl(uri)
+                : throw 'cannot OpenUrl';
           },
         ),
       );
@@ -154,7 +160,7 @@ class _MainCenterState extends State<MainCenter> {
               ],
             ),
           );
-  }
+  }// end List
 
   StatelessWidget displayGridTech(AppController appController) {
     return appController.technicUserModels.isEmpty
@@ -165,31 +171,54 @@ class _MainCenterState extends State<MainCenter> {
             itemCount: appController.technicUserModels.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 10 / 12, crossAxisCount: 3),
-            itemBuilder: (context, index) => Card(
-              elevation: 8,
-              // color: AppConstant.cardColor,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: WidgetImageInternet(
-                        width: 100,
-                        height: 100,
-                        urlPath: appController
-                                .technicUserModels[index].urlProfile!.isEmpty
-                            ? AppConstant.urlFreeProfile
-                            : appController
-                                .technicUserModels[index].urlProfile!),
-                  ),
-                  WidgetText(
-                    text: AppService().cutWord(
-                        word: appController.technicUserModels[index].name,
-                        length: 12),
-                    textStyle:
-                        AppConstant().h3Style(fontWeight: FontWeight.w700),
-                  ),
-                ],
+            itemBuilder: (context, index) => InkWell(
+              onTap: () {
+                if (appController.userModelLogins.isEmpty) {
+                  AppDialog(context: context).normalDialog(
+                      title: 'ยังไม่ได้ลงชื่อเข้าใช้งาน',
+                      detail: 'กรุณา ลงชื่อเข้าใช้งาน',
+                      firstBotton: WidgetTextButton(
+                        label: 'ลงชื่อเข้าใช้งาน',
+                        pressFunc: () {
+                          Get.back();
+                          Get.to(Authen());
+                        },
+                      ));
+                } else {
+                  Get.to(DisplayProfileTechnic(
+                          userModelTechnic:
+                              appController.technicUserModels[index]))!
+                      .then((value) {
+                    appController.readAllReferance();
+                  });
+                }
+              },
+              child: Card(
+                elevation: 8,
+                // color: AppConstant.cardColor,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: WidgetImageInternet(
+                          width: 100,
+                          height: 100,
+                          urlPath: appController
+                                  .technicUserModels[index].urlProfile!.isEmpty
+                              ? AppConstant.urlFreeProfile
+                              : appController
+                                  .technicUserModels[index].urlProfile!),
+                    ),
+                    WidgetText(
+                      text: AppService().cutWord(
+                          word: appController.technicUserModels[index].name,
+                          length: 12),
+                      textStyle:
+                          AppConstant().h3Style(fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
