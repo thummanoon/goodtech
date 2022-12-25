@@ -151,8 +151,8 @@ class _MainCenterState extends State<MainCenter> {
             itemCount: appController.technicUserModels.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 10 / 12, crossAxisCount: 3),
-            itemBuilder: (context, index) => Card(
-              color: AppConstant.cardColor,
+            itemBuilder: (context, index) => Card(elevation: 8,
+              // color: AppConstant.cardColor,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
