@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:goodtech/models/message_model.dart';
 import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
@@ -16,6 +18,30 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
+  Future<void> processSendNoti(
+      {required String title,
+      required String body,
+      required String token}) async {
+    String urlAPI =
+        'https://www.androidthai.in.th/fluttertraining/noti/apiNotiThummanoon.php?isAdd=true&token=$token&title=$title&body=$body';
+    await Dio().get(urlAPI).then((value) {
+      print('##28dec Sent Noti Success');
+    });
+  }
+
+  Future<void> insertMessage({required MessageModel messageModel}) async {
+    AppController appController = Get.put(AppController());
+    await FirebaseFirestore.instance
+        .collection('chat')
+        .doc(appController.docIdChats.last)
+        .collection('message')
+        .doc()
+        .set(messageModel.toMap())
+        .then((value) {
+      print('##28dec insert chat Succes');
+    });
+  }
+
   Future<void> monitorNoti({required BuildContext context}) async {
     NotificationSettings settings =
         await FirebaseMessaging.instance.requestPermission();
