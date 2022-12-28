@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/banner_model.dart';
+import 'package:goodtech/models/chat_model.dart';
 import 'package:goodtech/models/referance_modal.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
 import 'package:goodtech/models/user_model.dart';
@@ -22,8 +23,54 @@ class AppController extends GetxController {
   RxList<ReferanceModel> referanceModels = <ReferanceModel>[].obs;
   RxList<BannerModel> bannerModels = <BannerModel>[].obs;
   RxList<UserModel> technicUserModels = <UserModel>[].obs;
-
+  RxList<String> docIdChats = <String>[].obs;
   RxList<String> messageChats = <String>[].obs;
+
+  Future<void> findDocIdChats(
+      {required String uidLogin, required String uidFriend}) async {
+    if (docIdChats.isNotEmpty) {
+      docIdChats.clear();
+    }
+
+    await FirebaseFirestore.instance
+        .collection('chat')
+        .get()
+        .then((value) async {
+      bool createDocument = true;
+
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          ChatModel chatModel = ChatModel.fromMap(element.data());
+          if ((chatModel.friends.contains(uidLogin)) &&
+              (chatModel.friends.contains(uidFriend))) {
+            docIdChats.add(element.id);
+            createDocument = false;
+          }
+        }
+
+        if (createDocument) {
+          await createNewChat(uidLogin, uidFriend);
+        }
+      } else {
+        createNewChat(uidLogin, uidFriend);
+      }
+    });
+  }
+
+  Future<void> createNewChat(String uidLogin, String uidFriend) async {
+    var friends = <String>[];
+    friends.add(uidLogin);
+    friends.add(uidFriend);
+    ChatModel model = ChatModel(friends: friends);
+
+    await FirebaseFirestore.instance
+        .collection('chat')
+        .doc()
+        .set(model.toMap())
+        .then((value) {
+      findDocIdChats(uidLogin: uidLogin, uidFriend: uidFriend);
+    });
+  }
 
   Future<void> readTechnicUserModel() async {
     if (technicUserModels.isNotEmpty) {
