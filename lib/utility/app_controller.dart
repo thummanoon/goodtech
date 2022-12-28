@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/banner_model.dart';
 import 'package:goodtech/models/chat_model.dart';
+import 'package:goodtech/models/message_model.dart';
 import 'package:goodtech/models/referance_modal.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
 import 'package:goodtech/models/user_model.dart';
@@ -25,6 +26,31 @@ class AppController extends GetxController {
   RxList<UserModel> technicUserModels = <UserModel>[].obs;
   RxList<String> docIdChats = <String>[].obs;
   RxList<String> messageChats = <String>[].obs;
+  RxList<MessageModel> messageModels = <MessageModel>[].obs;
+
+  Future<void> readMessageModels() async {
+    if (docIdChats.isNotEmpty) {
+      print('##28dec docId --> ${docIdChats.last}');
+
+      await FirebaseFirestore.instance
+          .collection('chat')
+          .doc(docIdChats.last)
+          .collection('message').orderBy('timestamp')
+          .snapshots()
+          .listen((event) {
+        if (messageModels.isNotEmpty) {
+          messageModels.clear();
+        }
+
+        if (event.docs.isNotEmpty) {
+          for (var element in event.docs) {
+            MessageModel messageModel = MessageModel.fromMap(element.data());
+            messageModels.add(messageModel);
+          }
+        }
+      });
+    }
+  }
 
   Future<void> findDocIdChats(
       {required String uidLogin, required String uidFriend}) async {
@@ -45,6 +71,7 @@ class AppController extends GetxController {
               (chatModel.friends.contains(uidFriend))) {
             docIdChats.add(element.id);
             createDocument = false;
+            readMessageModels();
           }
         }
 

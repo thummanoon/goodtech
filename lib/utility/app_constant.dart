@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppConstant {
-  static String urlFreeProfile = 'https://firebasestorage.googleapis.com/v0/b/goodtech-9a4a6.appspot.com/o/profile%2F6588977_config_construction_engineer_icon.png?alt=media&token=29151c2d-d733-4d58-81a7-27172adaa0fe';
+  static String urlFreeProfile =
+      'https://firebasestorage.googleapis.com/v0/b/goodtech-9a4a6.appspot.com/o/profile%2F6588977_config_construction_engineer_icon.png?alt=media&token=29151c2d-d733-4d58-81a7-27172adaa0fe';
   static var typeUsers = <String>[
     'user',
     'technic',
@@ -18,8 +19,19 @@ class AppConstant {
 
   static Color dark = Colors.black;
   static Color bgColor = Colors.white;
-   static Color cardColor = Color.fromARGB(255, 144, 220, 129);
+  static Color cardColor = Color.fromARGB(255, 144, 220, 129);
+  static Color chatColor = Colors.indigo;
 
+  BoxDecoration chatRightBox({required BuildContext context}) {
+    return BoxDecoration(
+        color: Theme.of(context).primaryColorLight,
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10)));
+  }
+  BoxDecoration chatLiftBox({required BuildContext context}) {
+    return BoxDecoration(
+        color: Theme.of(context).primaryColorLight,
+        borderRadius: const BorderRadius.only(bottomRight: Radius.circular(10)));
+  }
 
   BoxDecoration borderCurveBox() {
     return BoxDecoration(
@@ -60,9 +72,9 @@ class AppConstant {
     );
   }
 
-  TextStyle h3Style({Color? color, FontWeight? fontWeight}) {
+  TextStyle h3Style({Color? color, FontWeight? fontWeight, double? size}) {
     return TextStyle(
-      fontSize: 14,
+      fontSize: size ?? 14,
       color: color ?? dark,
       fontWeight: fontWeight ?? FontWeight.normal,
     );
