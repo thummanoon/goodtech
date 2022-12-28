@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,6 +16,24 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
+  Future<void> monitorNoti({required BuildContext context}) async {
+    NotificationSettings settings =
+        await FirebaseMessaging.instance.requestPermission();
+
+    FirebaseMessaging.onMessage.listen((event) {
+      print('##28dec onMessage Work');
+      String? title = event.notification!.title;
+      String? body = event.notification!.body;
+      AppDialog(context: context).normalDialog(title: title!, detail: body!);
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      String? title = event.notification!.title;
+      String? body = event.notification!.body;
+      AppDialog(context: context).normalDialog(title: title!, detail: body!);
+    });
+  }
+
   Future<void> processUploadToken({required String token}) async {
     AppController appController = Get.put(AppController());
 
