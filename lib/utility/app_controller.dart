@@ -10,6 +10,7 @@ import 'package:goodtech/models/referance_modal.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
 import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/utility/app_constant.dart';
+import 'package:goodtech/utility/app_service.dart';
 
 class AppController extends GetxController {
   RxBool redEye = true.obs;
@@ -28,6 +29,59 @@ class AppController extends GetxController {
   RxList<String> messageChats = <String>[].obs;
   RxList<MessageModel> messageModels = <MessageModel>[].obs;
 
+  RxList<String> docIdChatUserTechnics = <String>[].obs;
+  RxList<ChatModel> chatModelUserTechnic = <ChatModel>[].obs;
+  RxList<String> nameUserOrTechnics = <String>[].obs;
+  RxList<String> lastMessages = <String>[].obs;
+
+  Future<void> readDocIdChatUserTechnics({required String uid}) async {
+    if (docIdChatUserTechnics.isNotEmpty) {
+      docIdChatUserTechnics.clear();
+      chatModelUserTechnic.clear();
+      nameUserOrTechnics.clear();
+      lastMessages.clear();
+    }
+    await FirebaseFirestore.instance
+        .collection('chat')
+        .get()
+        .then((value) async {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          ChatModel chatModel = ChatModel.fromMap(element.data());
+          if (chatModel.friends.contains(uid)) {
+            docIdChatUserTechnics.add(element.id);
+            chatModelUserTechnic.add(chatModel);
+
+            var friends = chatModel.friends;
+            friends.remove(uid);
+
+            await AppService().fineUserModel(uid: friends.last).then((value) {
+              nameUserOrTechnics.add(value.name);
+            });
+
+            await FirebaseFirestore.instance
+                .collection('chat')
+                .doc(element.id)
+                .collection('message')
+                .orderBy('timestamp')
+                .get()
+                .then((value) {
+              if (value.docs.isNotEmpty) {
+                MessageModel? messageModel;
+                for (var element in value.docs) {
+                  messageModel = MessageModel.fromMap(element.data());
+                }
+                lastMessages.add(messageModel?.message ?? 'Last Message');
+              } else {
+                lastMessages.add('');
+              }
+            });
+          }
+        }
+      }
+    });
+  }
+
   Future<void> readMessageModels() async {
     if (docIdChats.isNotEmpty) {
       print('##28dec docId --> ${docIdChats.last}');
@@ -35,7 +89,8 @@ class AppController extends GetxController {
       await FirebaseFirestore.instance
           .collection('chat')
           .doc(docIdChats.last)
-          .collection('message').orderBy('timestamp')
+          .collection('message')
+          .orderBy('timestamp')
           .snapshots()
           .listen((event) {
         if (messageModels.isNotEmpty) {
