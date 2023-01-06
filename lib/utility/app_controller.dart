@@ -34,6 +34,8 @@ class AppController extends GetxController {
   RxList<String> nameUserOrTechnics = <String>[].obs;
   RxList<String> lastMessages = <String>[].obs;
 
+  
+
   Future<void> readDocIdChatUserTechnics({required String uid}) async {
     if (docIdChatUserTechnics.isNotEmpty) {
       docIdChatUserTechnics.clear();
