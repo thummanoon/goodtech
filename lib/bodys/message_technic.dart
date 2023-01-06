@@ -4,6 +4,7 @@ import 'package:goodtech/states/payment_page.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
+import 'package:goodtech/utility/app_service.dart';
 import 'package:goodtech/widgets/widget_menu.dart';
 import 'package:goodtech/widgets/widget_text.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
@@ -44,23 +45,50 @@ class _MessageTechnicState extends State<MessageTechnic> {
                     tapFunc: () {
                       var docIdChats =
                           appController.userModelLogins.last.docIdChats;
-                      print('##6jan docIdChat --> $docIdChats');
+                      print('##6jan docIdChats --> $docIdChats');
 
-                      if (docIdChats!.isEmpty) {
+                      var money = appController.userModelLogins.last.money;
+
+                      if (money == 0.0) {
+                        dialogRequire(context);
+                      } else if (docIdChats!.isEmpty) {
+                        // ยังไม่เคยคุยกับใครเลย
                         AppDialog(context: context).normalDialog(
-                            title: 'ยังไม่มีสิทธิ์ Chat',
-                            detail: 'กรุณาเปิดสิทธิ์เข้าใช้งาน',
+                            title: 'ระบบทำการตัดเงิน',
+                            detail:
+                                'ยอดเงินที่คุณมี $money บาท ในการคุยกับลูกค้า ระบบจะทำการตัดเงิน 32.10 บาท ต่อการรับงาน 1 ครั้ง',
                             firstBotton: WidgetTextButton(
-                              label: 'เปิดสิทธิ์ใช้งาน',
+                              label: 'ยินดี',
                               pressFunc: () {
-                                Get.back();
-                                Get.to(const PaymentPage());
+                                AppService()
+                                    .processPayMoneyForChat(
+                                        docIdChat: appController
+                                            .docIdChatUserTechnics[index])
+                                    .then((value) {
+                                  Get.back();
+                                });
                               },
                             ));
-                      } else {}
+                      } else {
+                        // check ว่า  user เคยคุยด้วยไหม
+                      }
                     },
                   ),
                 );
         });
+  }
+
+  void dialogRequire(BuildContext context) {
+    AppDialog(context: context).normalDialog(
+      title: 'ยังไม่มีสิทธิ์ Chat',
+      detail: 'กรุณาเปิดสิทธิ์เข้าใช้งาน',
+      firstBotton: WidgetTextButton(
+        label: 'เปิดสิทธิ์ใช้งาน',
+        pressFunc: () {
+          Get.back();
+          Get.to(const PaymentPage());
+        },
+      ),
+    );
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,7 +21,27 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
-  Future<void> processInsertSlip({required CheckPaymentModel checkPaymentModel}) async {
+  Future<void> processPayMoneyForChat({required String docIdChat}) async {
+    AppController appController = Get.put(AppController());
+    Map<String, dynamic> map = appController.userModelLogins.last.toMap();
+    print('##6jan ก่อนตัด $map');
+
+    map['money'] = map['money'] - 32.10;
+    List<String> docIdChats = map['docIdChats'];
+    docIdChats.add(docIdChat);
+    print('##6jan หลังตัด $map');
+
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(appController.uidLogins.last)
+        .update(map)
+        .then((value) {
+      print('##6jan PayMoney Succss');
+    });
+  }
+
+  Future<void> processInsertSlip(
+      {required CheckPaymentModel checkPaymentModel}) async {
     await FirebaseFirestore.instance
         .collection('checkslip')
         .doc()
