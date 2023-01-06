@@ -14,6 +14,8 @@ class UserModel {
   final GeoPoint geoPoint;
   final String? urlProfile;
   final String? token;
+  final List<String>? docIdChats;
+  final double? money;
 
   UserModel({
     required this.name,
@@ -27,6 +29,8 @@ class UserModel {
     required this.geoPoint,
     this.urlProfile,
     this.token,
+    this.docIdChats,
+    this.money,
   });
 
   Map<String, dynamic> toMap() {
@@ -42,6 +46,8 @@ class UserModel {
       'geoPoint': geoPoint,
       'urlProfile': urlProfile,
       'token': token,
+      'docIdChats': docIdChats,
+      'money': money,
     };
   }
 
@@ -57,15 +63,18 @@ class UserModel {
       skillTechnic: List<String>.from(map['skillTechnic'] ?? []),
       geoPoint: (map['geoPoint'] ?? const GeoPoint(0, 0)),
       urlProfile: map['urlProfile'] ?? '',
-      token: map['token'] ??  '',
+      token: map['token'] ?? '',
+      docIdChats: List<String>.from(map['docIdChats'] ?? []),
+      money: map['money'] ?? 0.0,
     );
   }
 
-  //skillTechnic: List<String>.from(map['skillTechnic'] ?? []),
-  //geoPoint: (map['geoPoint'] ?? const GeoPoint(0, 0)),
-  // urlProfile: map['urlProfile'] ?? '',
-      // token: map['token'] ??  '',
-    
+  // skillTechnic: List<String>.from(map['skillTechnic'] ?? []),
+  //     geoPoint: (map['geoPoint'] ?? const GeoPoint(0, 0)),
+  //     urlProfile: map['urlProfile'] ?? '',
+  //     token: map['token'] ?? '',
+  //     docIdChats: List<String>.from(map['docIdChats'] ?? []),
+  //     money: map['money'] ?? 0.0,
   String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) =>

@@ -28,6 +28,11 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
               ? const WidgetProgress()
               : ListView(
                   children: [
+                    const WidgetShoehead(head: 'กระเป๋าเงิน :'),
+                    showTitle(
+                        head: 'ยอดเงินคงเหลือ',
+                        flex: 4,
+                        value: appController.userModels.last.money.toString()),
                     imageProfile(appController),
                     const WidgetShoehead(head: 'ข้อมูลทั่วไป :'),
                     showTitle(
@@ -102,14 +107,14 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
     );
   }
 
-  Padding showTitle({required String head, required String value}) {
+  Padding showTitle({required String head, required String value, int? flex}) {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 2,
+            flex: flex ?? 2,
             child: WidgetText(
               text: head,
               textStyle: AppConstant().h2Style(fontWeight: FontWeight.w500),
@@ -132,11 +137,14 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        WidgetShowProfile(
-          urlImage: appController.userModels[0].urlProfile!.isEmpty
-              ? AppConstant.urlFreeProfile
-              : appController.userModels[0].urlProfile!,
-          radius: 100,
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 16),
+          child: WidgetShowProfile(
+            urlImage: appController.userModels[0].urlProfile!.isEmpty
+                ? AppConstant.urlFreeProfile
+                : appController.userModels[0].urlProfile!,
+            radius: 100,
+          ),
         ),
       ],
     );

@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:goodtech/models/check_payment_model.dart';
 import 'package:goodtech/models/message_model.dart';
 import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/utility/app_controller.dart';
@@ -18,6 +19,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
+  Future<void> processInsertSlip({required CheckPaymentModel checkPaymentModel}) async {
+    await FirebaseFirestore.instance
+        .collection('checkslip')
+        .doc()
+        .set(checkPaymentModel.toMap())
+        .then((value) => print('##6jan Insert Slip Success'));
+  }
+
   Future<void> processSendNoti(
       {required String title,
       required String body,

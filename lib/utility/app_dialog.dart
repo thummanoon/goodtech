@@ -17,6 +17,7 @@ class AppDialog {
     Widget? iconWidget,
     Widget? firstBotton,
     Widget? secondBotton,
+    
   }) {
     Get.dialog(
       AlertDialog(
@@ -34,7 +35,7 @@ class AppDialog {
         actions: [
           firstBotton ?? const SizedBox(),
           secondBotton ??
-              WidgetTextButton(
+               WidgetTextButton(
                 label: firstBotton == null ? 'OK' : 'Cancel',
                 pressFunc: () {
                   Get.back();
