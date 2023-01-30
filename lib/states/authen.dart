@@ -31,7 +31,7 @@ class _AuthenState extends State<Authen> {
             builder: (AppController appController) {
               return SafeArea(
                 child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
+                  behavior: HitTestBehavior.opaque, 
                   onTap: () =>
                       FocusScope.of(context).requestFocus(FocusScopeNode()),
                   child: Stack(

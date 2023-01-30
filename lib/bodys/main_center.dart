@@ -70,9 +70,9 @@ class _MainCenterState extends State<MainCenter> {
               children: [
                 const WidgetShoehead(head: 'Banner'),
                 displayBanner(appController),
-                const WidgetShoehead(head: 'Technicial :'),
+                const WidgetShoehead(head: 'รวมช่างและบริการ :'),
                 displayGridTech(appController),
-                const WidgetShoehead(head: 'Referance :'),
+                const WidgetShoehead(head: 'ผลงานช่างและบริการ :'),
                 Divider(
                   color: AppConstant.dark,
                   thickness: 1,
@@ -160,7 +160,7 @@ class _MainCenterState extends State<MainCenter> {
               ],
             ),
           );
-  }// end List
+  } // end List
 
   StatelessWidget displayGridTech(AppController appController) {
     return appController.technicUserModels.isEmpty
@@ -194,7 +194,7 @@ class _MainCenterState extends State<MainCenter> {
                 }
               },
               child: Card(
-                elevation: 8,
+                elevation: 7,
                 // color: AppConstant.cardColor,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

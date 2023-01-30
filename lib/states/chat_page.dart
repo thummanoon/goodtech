@@ -75,53 +75,55 @@ class _ChatPageState extends State<ChatPage> {
                     children: [
                       appController.messageModels.isEmpty
                           ? const SizedBox()
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              physics: const ScrollPhysics(),
-                              itemCount: appController.messageModels.length,
-                              itemBuilder: (context, index) => Row(
-                                mainAxisAlignment:
-                                    appController.uidLogins.last ==
-                                            appController
-                                                .messageModels[index].uidPost
-                                        ? MainAxisAlignment.end
-                                        : MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    constraints: BoxConstraints(maxWidth: 200),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4, horizontal: 8),
-                                    margin: const EdgeInsets.only(bottom: 4),
-                                    decoration: appController.uidLogins.last ==
-                                            appController
-                                                .messageModels[index].uidPost
-                                        ? AppConstant()
-                                            .chatRightBox(context: context)
-                                        : AppConstant()
-                                            .chatLiftBox(context: context),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        WidgetText(
-                                            text: appController
-                                                .messageModels[index].message),
-                                        WidgetText(
-                                          text: AppService().dateTimeToString(format: 'dd/MM/yyyy HH:mm',
-                                              dateTime: appController
-                                                  .messageModels[index]
-                                                  .timestamp
-                                                  .toDate()),
-                                          textStyle: AppConstant().h3Style(
-                                              size: 10,
-                                              color: AppConstant.chatColor),
-                                        )
-                                      ],
+                          : SizedBox(width: boxConstraints.maxWidth,height: boxConstraints.maxHeight-60,
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const ScrollPhysics(),
+                                itemCount: appController.messageModels.length,
+                                itemBuilder: (context, index) => Row(
+                                  mainAxisAlignment:
+                                      appController.uidLogins.last ==
+                                              appController
+                                                  .messageModels[index].uidPost
+                                          ? MainAxisAlignment.end
+                                          : MainAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      constraints: BoxConstraints(maxWidth: 200),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4, horizontal: 8),
+                                      margin: const EdgeInsets.only(bottom: 4),
+                                      decoration: appController.uidLogins.last ==
+                                              appController
+                                                  .messageModels[index].uidPost
+                                          ? AppConstant()
+                                              .chatRightBox(context: context)
+                                          : AppConstant()
+                                              .chatLiftBox(context: context),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          WidgetText(
+                                              text: appController
+                                                  .messageModels[index].message),
+                                          WidgetText(
+                                            text: AppService().dateTimeToString(format: 'dd/MM/yyyy HH:mm',
+                                                dateTime: appController
+                                                    .messageModels[index]
+                                                    .timestamp
+                                                    .toDate()),
+                                            textStyle: AppConstant().h3Style(
+                                                size: 10,
+                                                color: AppConstant.chatColor),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
+                          ),
                       contentForm(
                           boxConstraints: boxConstraints,
                           appController: appController),

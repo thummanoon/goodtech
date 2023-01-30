@@ -133,7 +133,7 @@ class _MainHomeState extends State<MainHome> {
                                           path: 'images/profine.png',
                                           size: 35,
                                         ),
-                                        title: 'profine',
+                                        title: 'ข้อมูลช่างและบริการ',
                                         tapFunc: () {
                                           appController.indexBody.value = 2;
                                           Get.back();
@@ -144,7 +144,7 @@ class _MainHomeState extends State<MainHome> {
                                           path: 'images/referent.png',
                                           size: 35,
                                         ),
-                                        title: 'referent',
+                                        title: 'ผลงานที่ผ่านมา',
                                         tapFunc: () {
                                           appController.indexBody.value = 3;
                                           Get.back();
