@@ -34,7 +34,30 @@ class AppController extends GetxController {
   RxList<String> nameUserOrTechnics = <String>[].obs;
   RxList<String> lastMessages = <String>[].obs;
 
-  
+  RxList chatModels = <ChatModel>[].obs;
+  RxList nameFriends = <String>[].obs;
+
+  Future<void> readChatModelForUser() async {
+    if (chatModels.isNotEmpty) {
+      chatModels.clear();
+      nameFriends.clear();
+    }
+    await FirebaseFirestore.instance.collection('chat').get().then((value) {
+      for (var element in value.docs) {
+        ChatModel model = ChatModel.fromMap(element.data());
+        if (model.friends.contains(uidLogins.last)) {
+          chatModels.add(model);
+
+          for (var element2 in model.friends) {
+            if (element2 != uidLogins.last) {
+              String uidFriend = element2;
+              print('##30jan uidFriend ---> $element2');
+            }
+          }
+        }
+      }
+    });
+  }
 
   Future<void> readDocIdChatUserTechnics({required String uid}) async {
     if (docIdChatUserTechnics.isNotEmpty) {
