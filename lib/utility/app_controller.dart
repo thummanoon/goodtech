@@ -36,11 +36,13 @@ class AppController extends GetxController {
 
   RxList chatModels = <ChatModel>[].obs;
   RxList nameFriends = <String>[].obs;
+  RxList userModelTechnicForUsers = <UserModel>[].obs;
 
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {
       chatModels.clear();
       nameFriends.clear();
+      userModelTechnicForUsers.clear();
     }
     await FirebaseFirestore.instance.collection('chat').get().then((value) {
       for (var element in value.docs) {
@@ -52,6 +54,11 @@ class AppController extends GetxController {
             if (element2 != uidLogins.last) {
               String uidFriend = element2;
               print('##30jan uidFriend ---> $element2');
+
+              AppService().fineUserModel(uid: element2).then((value) {
+                userModelTechnicForUsers.add(value);
+                nameFriends.add(value.name);
+              });
             }
           }
         }
