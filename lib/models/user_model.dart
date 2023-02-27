@@ -15,7 +15,7 @@ class UserModel {
   final String? urlProfile;
   final String? token;
   final List<String>? docIdChats;
-  final double? money;
+  final String? money;
 
   UserModel({
     required this.name,
@@ -65,7 +65,7 @@ class UserModel {
       urlProfile: map['urlProfile'] ?? '',
       token: map['token'] ?? '',
       docIdChats: List<String>.from(map['docIdChats'] ?? []),
-      money: map['money'] ?? 0.0,
+      money: map['money'] ?? '',
     );
   }
 

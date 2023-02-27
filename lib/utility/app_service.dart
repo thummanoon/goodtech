@@ -21,12 +21,36 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
+  Future<void> readAllCheckSlip() async {
+    AppController appController = Get.put(AppController());
+    if (appController.checkPaymentModels.isNotEmpty) {
+      appController.checkPaymentModels.clear();
+      appController.userModels.clear();
+    }
+
+    await FirebaseFirestore.instance
+        .collection('checkslip')
+        .get()
+        .then((value) async {
+      for (var element in value.docs) {
+        CheckPaymentModel model = CheckPaymentModel.fromMap(element.data());
+        appController.checkPaymentModels.add(model);
+        await fineUserModel(uid: model.uidPayment).then((value) {
+          appController.userModels.add(value);
+        });
+      }
+    });
+  }
+
   Future<void> processPayMoneyForChat({required String docIdChat}) async {
     AppController appController = Get.put(AppController());
     Map<String, dynamic> map = appController.userModelLogins.last.toMap();
     print('##6jan ก่อนตัด $map');
 
-    map['money'] = map['money'] - 32.10;
+    double douMoney = double.parse(map['money']);
+    douMoney = douMoney - 32.10;
+
+    map['money'] = douMoney.toString();
     List<String> docIdChats = map['docIdChats'];
     docIdChats.add(docIdChat);
     print('##6jan หลังตัด $map');

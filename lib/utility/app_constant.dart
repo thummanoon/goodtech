@@ -17,6 +17,7 @@ class AppConstant {
   static String pageAccountUser = '/accountUser';
   static String pageAccountTeachnic = '/accountTeachnic';
   static String pageMainHome = '/mainhome';
+  static String pageMainHomeWeb = '/mainhomeWeb';
 
   static Color dark = Colors.black;
   static Color bgColor = Colors.white;

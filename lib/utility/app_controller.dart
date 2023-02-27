@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/banner_model.dart';
 import 'package:goodtech/models/chat_model.dart';
+import 'package:goodtech/models/check_payment_model.dart';
 import 'package:goodtech/models/message_model.dart';
 import 'package:goodtech/models/referance_modal.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
@@ -37,6 +38,8 @@ class AppController extends GetxController {
   RxList chatModels = <ChatModel>[].obs;
   RxList nameFriends = <String>[].obs;
   RxList userModelTechnicForUsers = <UserModel>[].obs;
+  RxList<CheckPaymentModel> checkPaymentModels = <CheckPaymentModel>[].obs;
+
 
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {

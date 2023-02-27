@@ -48,9 +48,9 @@ class _MessageTechnicState extends State<MessageTechnic> {
                           appController.userModelLogins.last.docIdChats;
                       print('##6jan docIdChats --> $docIdChats');
 
-                      var money = appController.userModelLogins.last.money;
+                      String money = appController.userModelLogins.last.money!;
 
-                      if (money == 0.0) {
+                      if (money.isEmpty) {
                         dialogRequire(context);
                       } else if (docIdChats!.isEmpty) {
                         // ยังไม่เคยคุยกับใครเลย
@@ -79,7 +79,7 @@ class _MessageTechnicState extends State<MessageTechnic> {
         });
   }
 
-  void dialogPayMoney(BuildContext context, double? money,
+  void dialogPayMoney(BuildContext context, String? money,
       AppController appController, int index) {
     AppDialog(context: context).normalDialog(
         title: 'ระบบทำการตัดเงิน',
