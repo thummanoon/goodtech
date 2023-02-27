@@ -61,6 +61,7 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
                                 appController.findUserModel(
                                     uid: appController.uidLogins[0]);
                                 appController.readAllTypeUser();
+                                appController.findUserModelLogin();
                               });
                             },
                           ),

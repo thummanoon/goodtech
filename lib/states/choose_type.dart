@@ -36,44 +36,48 @@ class _ChooseTypeState extends State<ChooseType> {
         return GetX(
             init: AppController(),
             builder: (AppController appController) {
-              return Column(
+              return ListView(
                 children: [
                   WidgetLogo(sizeLogo: boxConstraints.maxWidth * 0.50),
-                  WidgetText(
-                    text: 'เลือกชนิดผู้ใช้งาน',
-                    textStyle: AppConstant().h2Style(),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 16),
-                    width: 250,
-                    child: Column(
-                      children: [
-                        RadioListTile(
-                          value: 0,
-                          groupValue: appController.indexTypeUser.value,
-                          onChanged: (value) {
-                            appController.indexTypeUser.value = value!;
-                          },
-                          title: WidgetText(text: typeUserShows[0]),
+                  Column(
+                    children: [
+                      WidgetText(
+                        text: 'เลือกชนิดผู้ใช้งาน',
+                        textStyle: AppConstant().h2Style(),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 16),
+                        width: 250,
+                        child: Column(
+                          children: [
+                            RadioListTile(
+                              value: 0,
+                              groupValue: appController.indexTypeUser.value,
+                              onChanged: (value) {
+                                appController.indexTypeUser.value = value!;
+                              },
+                              title: WidgetText(text: typeUserShows[0]),
+                            ),
+                            RadioListTile(
+                              value: 1,
+                              groupValue: appController.indexTypeUser.value,
+                              onChanged: (value) {
+                                appController.indexTypeUser.value = value!;
+                              },
+                              title: WidgetText(text: typeUserShows[1]),
+                            ),
+                          ],
                         ),
-                        RadioListTile(
-                          value: 1,
-                          groupValue: appController.indexTypeUser.value,
-                          onChanged: (value) {
-                            appController.indexTypeUser.value = value!;
-                          },
-                          title: WidgetText(text: typeUserShows[1]),
-                        ),
-                      ],
-                    ),
+                      ),
+                      WidgetButtom(
+                        width: 100,
+                        label: 'ยืนยัน',
+                        pressFunc: () {
+                          Get.toNamed(pages[appController.indexTypeUser.value]);
+                        },
+                      ),
+                    ],
                   ),
-                  WidgetButtom(
-                    width: 100,
-                    label: 'ยืนยัน',
-                    pressFunc: () {
-                      Get.toNamed(pages[appController.indexTypeUser.value]);
-                    },
-                  )
                 ],
               );
             });
