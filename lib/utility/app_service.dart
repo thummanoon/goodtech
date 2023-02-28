@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
@@ -21,11 +22,30 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
+  double calculateDistance(
+      {required double lat1,
+      required double lng1,
+      required double lat2,
+      required double lng2}) {
+    double distance = 0;
+
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lng2 - lng1) * p)) / 2;
+    distance = 12742 * asin(sqrt(a));
+
+    return distance;
+  }
+
   Future<void> readAllCheckSlip() async {
     AppController appController = Get.put(AppController());
     if (appController.checkPaymentModels.isNotEmpty) {
       appController.checkPaymentModels.clear();
       appController.userModels.clear();
+      appController.docIdUsers.clear();
+      appController.docIdCheckSlips.clear();
     }
 
     await FirebaseFirestore.instance
@@ -35,6 +55,9 @@ class AppService {
       for (var element in value.docs) {
         CheckPaymentModel model = CheckPaymentModel.fromMap(element.data());
         appController.checkPaymentModels.add(model);
+        appController.docIdUsers.add(model.uidPayment);
+        appController.docIdCheckSlips.add(element.id);
+
         await fineUserModel(uid: model.uidPayment).then((value) {
           appController.userModels.add(value);
         });
@@ -101,17 +124,22 @@ class AppService {
     NotificationSettings settings =
         await FirebaseMessaging.instance.requestPermission();
 
+    AppController appController = Get.put(AppController());
+    var user = FirebaseAuth.instance.currentUser;
+
     FirebaseMessaging.onMessage.listen((event) {
       print('##28dec onMessage Work');
       String? title = event.notification!.title;
       String? body = event.notification!.body;
       AppDialog(context: context).normalDialog(title: title!, detail: body!);
+      appController.findUserModel(uid: user!.uid);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
       String? title = event.notification!.title;
       String? body = event.notification!.body;
       AppDialog(context: context).normalDialog(title: title!, detail: body!);
+      appController.findUserModel(uid: user!.uid);
     });
   }
 

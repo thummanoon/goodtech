@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:goodtech/bodys/category_technic.dart';
 import 'package:goodtech/bodys/main_center.dart';
 import 'package:goodtech/bodys/message_technic.dart';
 import 'package:goodtech/bodys/message_user.dart';
@@ -36,6 +37,7 @@ class _MainHomeState extends State<MainHome> {
     const ProfileTechnic(),
     const ReferanceTechnic(),
     const MessageUser(),
+    const CategoryTechnic(),
   ];
 
   var titles = <String>[
@@ -44,6 +46,7 @@ class _MainHomeState extends State<MainHome> {
     'profile',
     'referance',
     'ข่าวสาร',
+    'กลุ่มของช่างและบริการ',
   ];
 
   @override
@@ -165,6 +168,16 @@ class _MainHomeState extends State<MainHome> {
                                     },
                                   )
                             : const SizedBox(),
+                        WidgetMenu(
+                          leadWidget: const WidgetImage(
+                            path: 'images/category.png',
+                          ),
+                          title: 'กลุ่มของช่างและบริการ',
+                          tapFunc: () {
+                            appController.indexBody.value = 5;
+                            Get.back();
+                          },
+                        ),
                         const Spacer(),
                         Divider(
                           color: AppConstant.dark,

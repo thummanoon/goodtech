@@ -8,6 +8,7 @@ import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/utility/app_service.dart';
 import 'package:goodtech/widgets/widget_buttom.dart';
+import 'package:goodtech/widgets/widget_calculate_distance.dart';
 import 'package:goodtech/widgets/widget_form.dart';
 import 'package:goodtech/widgets/widget_icon_button.dart';
 import 'package:goodtech/widgets/widget_text.dart';
@@ -46,10 +47,7 @@ class _ChatPaeTechnicState extends State<ChatPaeTechnic> {
           textStyle: AppConstant().h2Style(),
         ),
         actions: [
-          WidgetIconButton(
-            iconData: Icons.social_distance,
-            pressFunc: () {},
-          )
+          WidgetCalcualteDistance()
         ],
       ),
       body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
@@ -159,3 +157,5 @@ class _ChatPaeTechnicState extends State<ChatPaeTechnic> {
     );
   }
 }
+
+

@@ -21,6 +21,7 @@ class AppController extends GetxController {
   RxList<UserModel> userModelLogins = <UserModel>[].obs;
   RxList<String> uidLogins = <String>[].obs;
   RxList<UserModel> userModels = <UserModel>[].obs;
+  RxList<String> docIdUsers = <String>[].obs;
   RxList<File> files = <File>[].obs;
   RxList<String> typeUsers = <String>[].obs;
   RxList<ReferanceModel> referanceModels = <ReferanceModel>[].obs;
@@ -39,7 +40,8 @@ class AppController extends GetxController {
   RxList nameFriends = <String>[].obs;
   RxList userModelTechnicForUsers = <UserModel>[].obs;
   RxList<CheckPaymentModel> checkPaymentModels = <CheckPaymentModel>[].obs;
-
+  RxList<String> docIdCheckSlips = <String>[].obs;
+  RxList<UserModel> userModelDisplayTechnic = <UserModel>[].obs;
 
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {

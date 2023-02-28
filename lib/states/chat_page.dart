@@ -9,6 +9,7 @@ import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/utility/app_service.dart';
 import 'package:goodtech/widgets/widget_buttom.dart';
+import 'package:goodtech/widgets/widget_calculate_distance.dart';
 import 'package:goodtech/widgets/widget_form.dart';
 import 'package:goodtech/widgets/widget_text.dart';
 
@@ -57,7 +58,7 @@ class _ChatPageState extends State<ChatPage> {
         title: WidgetText(
           text: AppService().cutWord(word: userModelTechnic!.name, length: 20),
           textStyle: AppConstant().h2Style(),
-        ),
+        ), actions: [WidgetCalcualteDistance()],
       ),
       body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
         return GetX(

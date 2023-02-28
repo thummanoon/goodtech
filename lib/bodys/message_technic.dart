@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/states/chat_page_technic.dart';
@@ -66,7 +67,10 @@ class _MessageTechnicState extends State<MessageTechnic> {
                           print(
                               '##6jan Check ว่า user เคยคุยด้วยไหม เคยคุยกันแล้ว ');
 
-                          Get.to(ChatPaeTechnic(docIdChat: docIdChat, nameUser: appController.nameUserOrTechnics[index],));
+                          Get.to(ChatPaeTechnic(
+                            docIdChat: docIdChat,
+                            nameUser: appController.nameUserOrTechnics[index],
+                          ));
                         } else {
                           print(
                               '##6jan Check ว่า user เคยคุยด้วยไหม  ไม่เคยคุยกัน ');
@@ -81,6 +85,7 @@ class _MessageTechnicState extends State<MessageTechnic> {
 
   void dialogPayMoney(BuildContext context, String? money,
       AppController appController, int index) {
+    var user = FirebaseAuth.instance.currentUser;
     AppDialog(context: context).normalDialog(
         title: 'ระบบทำการตัดเงิน',
         detail:
@@ -93,6 +98,7 @@ class _MessageTechnicState extends State<MessageTechnic> {
                     docIdChat: appController.docIdChatUserTechnics[index])
                 .then((value) {
               Get.back();
+              appController.findUserModel(uid: user!.uid);
             });
           },
         ));

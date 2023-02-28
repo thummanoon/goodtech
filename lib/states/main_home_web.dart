@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
+import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/utility/app_service.dart';
+import 'package:goodtech/widgets/widget_buttom.dart';
+import 'package:goodtech/widgets/widget_form.dart';
+import 'package:goodtech/widgets/widget_icon_button.dart';
 import 'package:goodtech/widgets/widget_image_internet.dart';
 import 'package:goodtech/widgets/widget_text.dart';
 
@@ -55,13 +60,125 @@ class _MainHomeWebState extends State<MainHomeWeb> {
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 16),
                               height: 200,
-                              width: 300,
+                              width: 200,
                               child: Column(
                                 children: [
-                                  displayUser(head: 'ชื่อ :', value: appController.userModels[index].name),
-                                  displayUser(head: 'นามสกุล', value: appController.userModels[index].surName),
-                                  displayUser(head: 'ที่อยู่', value: appController.userModels[index].address),
-                                  displayUser(head: 'Approve :', value: appController.checkPaymentModels[index].approve ? 'Approved' : 'Non Approve' )
+                                  displayUser(
+                                      head: 'ชื่อ :',
+                                      value:
+                                          appController.userModels[index].name),
+                                  displayUser(
+                                      head: 'นามสกุล',
+                                      value: appController
+                                          .userModels[index].surName),
+                                  displayUser(
+                                      head: 'ที่อยู่',
+                                      value: appController
+                                          .userModels[index].address),
+                                  displayUser(
+                                      head: 'Approve :',
+                                      value: appController
+                                              .checkPaymentModels[index].approve
+                                          ? 'Approved'
+                                          : 'Non Approve',
+                                      textColor: appController
+                                              .checkPaymentModels[index].approve
+                                          ? Colors.green
+                                          : Colors.red),
+                                  appController
+                                          .checkPaymentModels[index].approve
+                                      ? const SizedBox()
+                                      : WidgetIconButton(
+                                          iconData: Icons.approval_outlined,
+                                          pressFunc: () {
+                                            String? strMoney;
+                                            AppDialog(context: context)
+                                                .normalDialog(
+                                              title: 'กรอกจำนวนเงิน',
+                                              detail: '',
+                                              contenWidget: WidgetForm(
+                                                changeFunc: (p0) {
+                                                  strMoney = p0.trim();
+                                                },
+                                                labelWidget: WidgetText(
+                                                    text:
+                                                        'กรอกจำนวนเงินเฉพาะตัวเลข'),
+                                              ),
+                                              firstBotton: WidgetButtom(
+                                                label: 'Approve',
+                                                pressFunc: () async {
+                                                  if (strMoney?.isEmpty ??
+                                                      true) {
+                                                    Get.snackbar(
+                                                        'ยังไม่กรอกจำนวนเงิน',
+                                                        'กรอกจำนวนเงินด้วย');
+                                                  } else {
+                                                    double douMoney = 0.0;
+                                                    if (appController
+                                                            .userModels[index]
+                                                            .money
+                                                            ?.isEmpty ??
+                                                        true) {
+                                                    } else {
+                                                      douMoney = double.parse(
+                                                          appController
+                                                              .userModels[index]
+                                                              .money!);
+                                                    }
+
+                                                    douMoney = douMoney +
+                                                        double.parse(strMoney!);
+                                                    Map<String, dynamic>
+                                                        mapUser = appController
+                                                            .userModels[index]
+                                                            .toMap();
+
+                                                    mapUser['money'] =
+                                                        douMoney.toString();
+
+                                                    await FirebaseFirestore
+                                                        .instance
+                                                        .collection('user')
+                                                        .doc(appController
+                                                            .docIdUsers[index])
+                                                        .update(mapUser)
+                                                        .then((value) async {
+                                                      Map<String, dynamic>
+                                                          mapCheckSlip =
+                                                          appController
+                                                              .checkPaymentModels[
+                                                                  index]
+                                                              .toMap();
+                                                      mapCheckSlip['approve'] =
+                                                          true;
+
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                              'checkslip')
+                                                          .doc(appController
+                                                                  .docIdCheckSlips[
+                                                              index])
+                                                          .update(mapCheckSlip)
+                                                          .then((value) async {
+                                                        AppService().processSendNoti(
+                                                            title:
+                                                                'ยอดเงินเข้าระบบแล้ว',
+                                                            body:
+                                                                'โปรดเช็คยอดเงินในโปรไฟล์ ',
+                                                            token: appController.userModels[index].token!);
+
+                                                        Get.back();
+                                                        AppService()
+                                                            .readAllCheckSlip();
+                                                      });
+                                                    });
+                                                  }
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        )
                                 ],
                               ),
                             )
@@ -74,11 +191,12 @@ class _MainHomeWebState extends State<MainHomeWeb> {
     );
   }
 
-  Row displayUser({required String head, required String value, Color? textColor}) {
+  Row displayUser(
+      {required String head, required String value, Color? textColor}) {
     return Row(
       children: [
         Expanded(
-          flex: 1,
+          flex: 2,
           child: WidgetText(
             text: head,
             textStyle: AppConstant().h3Style(fontWeight: FontWeight.bold),
@@ -86,7 +204,10 @@ class _MainHomeWebState extends State<MainHomeWeb> {
         ),
         Expanded(
           flex: 3,
-          child: WidgetText(text: value, textStyle: AppConstant().h3Style(color: textColor),),
+          child: WidgetText(
+            text: value,
+            textStyle: AppConstant().h3Style(color: textColor),
+          ),
         ),
       ],
     );

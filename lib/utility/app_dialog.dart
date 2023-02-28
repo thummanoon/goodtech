@@ -17,6 +17,7 @@ class AppDialog {
     Widget? iconWidget,
     Widget? firstBotton,
     Widget? secondBotton,
+    Widget? contenWidget,
     
   }) {
     Get.dialog(
@@ -31,7 +32,7 @@ class AppDialog {
           text: title,
           textStyle: AppConstant().h2Style(),
         ),
-        content: WidgetText(text: detail),
+        content: contenWidget ?? WidgetText(text: detail),
         actions: [
           firstBotton ?? const SizedBox(),
           secondBotton ??
