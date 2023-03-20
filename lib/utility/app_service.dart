@@ -22,6 +22,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
+  void findProvince({required double lat, required double lng}) {
+    String urlAPI = 'https://api.longdo.com/map/services/address?lon=$lng&lat=$lat&noelevation=1&key=655d2d823b58529039d3dd59cd082673';
+  }
+
   double calculateDistance(
       {required double lat1,
       required double lng1,

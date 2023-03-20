@@ -34,6 +34,10 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
                         flex: 4,
                         value: appController.userModels.last.money.toString()),
                     imageProfile(appController),
+
+                       editButton(appController),
+
+
                     const WidgetShoehead(head: 'ข้อมูลทั่วไป :'),
                     showTitle(
                         head: 'ชื่อ :',
@@ -48,29 +52,33 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
                     listskill(appController),
                     const WidgetShoehead(head: 'แผนที่ร้าน :'),
                     showmap(appController),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 30, bottom: 30),
-                          width: 250,
-                          child: WidgetButtom(
-                            label: 'Edit Profile',
-                            pressFunc: () {
-                              Get.to(const EditProfileTechnic())!.then((value) {
-                                appController.findUserModel(
-                                    uid: appController.uidLogins[0]);
-                                appController.readAllTypeUser();
-                                appController.findUserModelLogin();
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    )
+                    
                   ],
                 );
         });
+  }
+
+  Row editButton(AppController appController) {
+    return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 16, bottom: 16),
+                        width: 250,
+                        child: WidgetButtom(
+                          label: 'แก้ไข Profile',
+                          pressFunc: () {
+                            Get.to(const EditProfileTechnic())!.then((value) {
+                              appController.findUserModel(
+                                  uid: appController.uidLogins[0]);
+                              appController.readAllTypeUser();
+                              appController.findUserModelLogin();
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  );
   }
 
   Row showmap(AppController appController) {
@@ -139,7 +147,8 @@ class _ProfileTechnicState extends State<ProfileTechnic> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 16),
+          margin: const EdgeInsets.symmetric(vertical: 14
+          ),
           child: WidgetShowProfile(
             urlImage: appController.userModels[0].urlProfile!.isEmpty
                 ? AppConstant.urlFreeProfile

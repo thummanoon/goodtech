@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/user_model.dart';
+import 'package:goodtech/states/display_profile_technic.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/widgets/widget_image.dart';
+import 'package:goodtech/widgets/widget_image_internet.dart';
 import 'package:goodtech/widgets/widget_text.dart';
 
 class DisplayCategoryTechnic extends StatefulWidget {
@@ -69,8 +71,37 @@ class _DisplayCategoryTechnicState extends State<DisplayCategoryTechnic> {
               ? const SizedBox()
               : ListView.builder(
                   itemCount: appController.userModelDisplayTechnic.length,
-                  itemBuilder: (context, index) => WidgetText(
-                      text: appController.userModelDisplayTechnic[index].name),
+                  itemBuilder: (context, index) => InkWell(
+                    onTap: () {
+                      Get.to(DisplayProfileTechnic(
+                          userModelTechnic: appController.userModelDisplayTechnic[index]));
+                    },
+                    child: Card(
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            child: WidgetImageInternet(
+                              urlPath: appController
+                                      .userModelDisplayTechnic[index]
+                                      .urlProfile!
+                                      .isEmpty
+                                  ? AppConstant.urlFreeProfile
+                                  : appController.userModelDisplayTechnic[index]
+                                      .urlProfile!,
+                              width: 60,
+                              height: 60,
+                            ),
+                          ),
+                          WidgetText(
+                            text: appController
+                                .userModelDisplayTechnic[index].name,
+                            textStyle: AppConstant().h2Style(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 );
         },
       ),
