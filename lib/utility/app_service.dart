@@ -13,6 +13,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/check_payment_model.dart';
 import 'package:goodtech/models/message_model.dart';
+import 'package:goodtech/models/province_model.dart';
 import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
@@ -22,8 +23,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
-  void findProvince({required double lat, required double lng}) {
-    String urlAPI = 'https://api.longdo.com/map/services/address?lon=$lng&lat=$lat&noelevation=1&key=655d2d823b58529039d3dd59cd082673';
+  Future<ProvinceModel> findProvince(
+      {required double lat, required double lng}) async {
+    String urlAPI =
+        'https://api.longdo.com/map/services/address?lon=$lng&lat=$lat&noelevation=1&key=655d2d823b58529039d3dd59cd082673';
+
+    var result = await Dio().get(urlAPI);
+    ProvinceModel provinceModel = ProvinceModel.fromMap(result.data);
+    return provinceModel;
   }
 
   double calculateDistance(

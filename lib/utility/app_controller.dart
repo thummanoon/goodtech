@@ -7,6 +7,7 @@ import 'package:goodtech/models/banner_model.dart';
 import 'package:goodtech/models/chat_model.dart';
 import 'package:goodtech/models/check_payment_model.dart';
 import 'package:goodtech/models/message_model.dart';
+import 'package:goodtech/models/province_model.dart';
 import 'package:goodtech/models/referance_modal.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
 import 'package:goodtech/models/user_model.dart';
@@ -42,6 +43,7 @@ class AppController extends GetxController {
   RxList<CheckPaymentModel> checkPaymentModels = <CheckPaymentModel>[].obs;
   RxList<String> docIdCheckSlips = <String>[].obs;
   RxList<UserModel> userModelDisplayTechnic = <UserModel>[].obs;
+  RxList<ProvinceModel> provinceModels = <ProvinceModel>[].obs;
 
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {

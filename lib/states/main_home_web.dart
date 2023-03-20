@@ -39,7 +39,9 @@ class _MainHomeWebState extends State<MainHomeWeb> {
           init: AppController(),
           builder: (AppController appController) {
             print(
-                'checkPaymenModel ---> ${appController.checkPaymentModels.length}');
+                '##20mar checkPaymenModel ---> ${appController.checkPaymentModels.length}');
+                 print(
+                '##20mar userModel ---> ${appController.userModels.length}');
             return ((appController.checkPaymentModels.isEmpty) ||
                     (appController.userModels.isEmpty))
                 ? const SizedBox()

@@ -53,6 +53,11 @@ class _MessageTechnicState extends State<MessageTechnic> {
 
                       if (money.isEmpty) {
                         dialogRequire(context);
+                      } else if (double.parse(money) < 32.10) {
+                        dialogRequire(context,
+                            title: 'จำนวนเงินในกระเป๋าเงินไม่พอ',
+                            detail: 'กรุณาเติมเงิน',
+                            label: 'เติมเงิน');
                       } else if (docIdChats!.isEmpty) {
                         // ยังไม่เคยคุยกับใครเลย
                         dialogPayMoney(context, money, appController, index);
@@ -104,12 +109,13 @@ class _MessageTechnicState extends State<MessageTechnic> {
         ));
   }
 
-  void dialogRequire(BuildContext context) {
+  void dialogRequire(BuildContext context,
+      {String? title, String? detail, String? label}) {
     AppDialog(context: context).normalDialog(
-      title: 'ยังไม่มีสิทธิ์ Chat',
-      detail: 'กรุณาเปิดสิทธิ์เข้าใช้งาน',
+      title: title ?? 'ยังไม่มีสิทธิ์ Chat',
+      detail: detail ?? 'กรุณาเปิดสิทธิ์เข้าใช้งาน',
       firstBotton: WidgetTextButton(
-        label: 'เปิดสิทธิ์ใช้งาน',
+        label: label ?? 'เปิดสิทธิ์ใช้งาน',
         pressFunc: () {
           Get.back();
           Get.to(const PaymentPage());
