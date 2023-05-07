@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/banner_model.dart';
 import 'package:goodtech/models/chat_model.dart';
@@ -43,6 +44,8 @@ class AppController extends GetxController {
   RxList<UserModel> userModelDisplayTechnic = <UserModel>[].obs;
   RxList<ProvinceModel> provinceModels = <ProvinceModel>[].obs;
   RxInt indexBodyMobile = 0.obs;
+  RxList<DateTime> jobDateTimes = <DateTime>[].obs;
+  RxList<TimeOfDay> jobTimeOfDates = <TimeOfDay>[].obs;
 
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {

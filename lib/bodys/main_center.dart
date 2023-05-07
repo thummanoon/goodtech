@@ -72,104 +72,123 @@ class _MainCenterState extends State<MainCenter> {
             print(
                 'typeuser at Main Center ---> ${appController.typeUsers.length}');
 
-            return Stack(
+            return ListView(
               children: [
-                ListView(
+                Stack(
                   children: [
-                    // const WidgetShoehead(head: 'Banner'),
-                    displayBanner(appController),
-                    const SizedBox(
-                      height: 12,
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        displayBanner(appController),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        const WidgetShoehead(head: 'รวมช่างและบริการ'),
+                      ],
                     ),
-                    const WidgetShoehead(head: 'รวมช่าง'),
-                    appController.typeUsers.isEmpty
-                        ? const SizedBox()
-                        : SizedBox(
-                            height: 100,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              physics: const ClampingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: appController.typeUsers.length,
-                              itemBuilder: (context, index) => SizedBox(width: 100,
-                                child: InkWell(onTap: () {
-                                  if (appController.userModelLogins.isEmpty) {
-                        AppDialog(context: context).normalDialog(
-                            title: 'ยังไม่ได้ลงชื่อเข้าใช้งาน',
-                            detail: 'กรุณา ลงชื่อเข้าใช้งาน',
-                            firstBotton: WidgetTextButton(
-                              label: 'ลงชื่อเข้าใช้งาน',
-                              pressFunc: () {
-                                Get.back();
-                                Get.to(const Authen());
+                    Positioned(
+                      top: 165,
+                      child: SizedBox(
+                        width: boxConstraints.maxWidth,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            WidgetButtom(
+                              fontWeight: FontWeight.w700,
+                              textColor: Colors.black,
+                              color: Colors.white,
+                              label: 'เรียกรถพยาบาล\n         1669',
+                              pressFunc: () async {
+                                const url = 'tel:1669';
+                                Uri uri = Uri.parse(url);
+                                await canLaunchUrl(uri)
+                                    ? await launchUrl(uri)
+                                    : throw 'Cannot';
                               },
-                            ));
-                      } else {
-                        Get.to(DisplayCategoryTechnic(
-                          category: appController.typeUsers[index],
-                          pathImage: 'images/category$index.png',
-                        ));
-                      }
-                                },
-                                  child: Card(
-                                    color: Colors.green.shade100,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        WidgetImage(
-                                          size: 48,
-                                          path: 'images/category$index.png',
-                                        ),
-                                        WidgetText(
-                                            text: appController.typeUsers[index]),
-                                      ],
+                            ),
+                            WidgetButtom(
+                              textColor: Colors.black,
+                              color: Colors.white,
+                              label: 'ประกาศงานสมาชิก',
+                              pressFunc: () {
+                                if (appController.userModelLogins.isEmpty) {
+                                  AppDialog(context: context).normalDialog(
+                                      title: 'ยังไม่ได้ลงชื่อเข้าใช้งาน',
+                                      detail: 'กรุณา ลงชื่อเข้าใช้งาน',
+                                      firstBotton: WidgetTextButton(
+                                        label: 'ลงชื่อเข้าใช้งาน',
+                                        pressFunc: () {
+                                          Get.back();
+                                          Get.to(const Authen());
+                                        },
+                                      ));
+                                } else {
+                                  Get.to(const PostJobMember());
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                appController.typeUsers.isEmpty
+                    ? const SizedBox()
+                    : SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: const ClampingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: appController.typeUsers.length,
+                          itemBuilder: (context, index) => SizedBox(
+                            width: 100,
+                            child: InkWell(
+                              onTap: () {
+                                if (appController.userModelLogins.isEmpty) {
+                                  AppDialog(context: context).normalDialog(
+                                      title: 'ยังไม่ได้ลงชื่อเข้าใช้งาน',
+                                      detail: 'กรุณา ลงชื่อเข้าใช้งาน',
+                                      firstBotton: WidgetTextButton(
+                                        label: 'ลงชื่อเข้าใช้งาน',
+                                        pressFunc: () {
+                                          Get.back();
+                                          Get.to(const Authen());
+                                        },
+                                      ));
+                                } else {
+                                  Get.to(DisplayCategoryTechnic(
+                                    category: appController.typeUsers[index],
+                                    pathImage: 'images/category$index.png',
+                                  ));
+                                }
+                              },
+                              child: Card(
+                                color: Colors.green.shade100,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    WidgetImage(
+                                      size: 48,
+                                      path: 'images/category$index.png',
                                     ),
-                                  ),
+                                    WidgetText(
+                                        text: appController.typeUsers[index]),
+                                  ],
                                 ),
                               ),
                             ),
                           ),
-                    displayGridTech(appController),
-                    const WidgetShoehead(head: 'ผลงานช่างและบริการ :'),
-                    Divider(
-                      color: AppConstant.dark,
-                      thickness: 1,
-                    ),
-                    listreferance(appController, boxConstraints),
-                  ],
+                        ),
+                      ),
+                displayGridTech(appController),
+                const WidgetShoehead(head: 'ผลงานช่างและบริการ :'),
+                Divider(
+                  color: AppConstant.dark,
+                  thickness: 1,
                 ),
-                Positioned(
-                  top: 165,
-                  child: SizedBox(
-                    width: boxConstraints.maxWidth,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        WidgetButtom(
-                          fontWeight: FontWeight.w700,
-                          textColor: Colors.black,
-                          color: Colors.white,
-                          label: 'เรียกรถพยาบาล\n         1669',
-                          pressFunc: () async {
-                            const url = 'tel:1669';
-                            Uri uri = Uri.parse(url);
-                            await canLaunchUrl(uri)
-                                ? await launchUrl(uri)
-                                : throw 'Cannot';
-                          },
-                        ),
-                        WidgetButtom(
-                          textColor: Colors.black,
-                          color: Colors.white,
-                          label: 'ประกาศงานสมาชิก',
-                          pressFunc: () {
-                            Get.to(const PostJobMember());
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                )
+                listreferance(appController, boxConstraints),
               ],
             );
           });
