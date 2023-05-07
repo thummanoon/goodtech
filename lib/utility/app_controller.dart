@@ -31,12 +31,10 @@ class AppController extends GetxController {
   RxList<String> docIdChats = <String>[].obs;
   RxList<String> messageChats = <String>[].obs;
   RxList<MessageModel> messageModels = <MessageModel>[].obs;
-
   RxList<String> docIdChatUserTechnics = <String>[].obs;
   RxList<ChatModel> chatModelUserTechnic = <ChatModel>[].obs;
   RxList<String> nameUserOrTechnics = <String>[].obs;
   RxList<String> lastMessages = <String>[].obs;
-
   RxList chatModels = <ChatModel>[].obs;
   RxList nameFriends = <String>[].obs;
   RxList userModelTechnicForUsers = <UserModel>[].obs;
@@ -44,6 +42,7 @@ class AppController extends GetxController {
   RxList<String> docIdCheckSlips = <String>[].obs;
   RxList<UserModel> userModelDisplayTechnic = <UserModel>[].obs;
   RxList<ProvinceModel> provinceModels = <ProvinceModel>[].obs;
+  RxInt indexBodyMobile = 0.obs;
 
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {

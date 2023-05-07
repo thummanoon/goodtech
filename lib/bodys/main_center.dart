@@ -4,11 +4,15 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/states/authen.dart';
+import 'package:goodtech/states/display_category_technic.dart';
 import 'package:goodtech/states/display_profile_technic.dart';
+import 'package:goodtech/states/post_job_member.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/utility/app_service.dart';
+import 'package:goodtech/widgets/widget_buttom.dart';
+import 'package:goodtech/widgets/widget_image.dart';
 import 'package:goodtech/widgets/widget_image_internet.dart';
 import 'package:goodtech/widgets/widget_progress.dart';
 
@@ -65,20 +69,107 @@ class _MainCenterState extends State<MainCenter> {
       return GetX(
           init: AppController(),
           builder: (AppController appController) {
-            print('##20dec ref --> ${appController.referanceModels.length}');
+            print(
+                'typeuser at Main Center ---> ${appController.typeUsers.length}');
 
-            return ListView(
+            return Stack(
               children: [
-                const WidgetShoehead(head: 'Banner'),
-                displayBanner(appController),
-                const WidgetShoehead(head: 'รวมช่างและบริการ :'),
-                displayGridTech(appController),
-                const WidgetShoehead(head: 'ผลงานช่างและบริการ :'),
-                Divider(
-                  color: AppConstant.dark,
-                  thickness: 1,
+                ListView(
+                  children: [
+                    // const WidgetShoehead(head: 'Banner'),
+                    displayBanner(appController),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    const WidgetShoehead(head: 'รวมช่าง'),
+                    appController.typeUsers.isEmpty
+                        ? const SizedBox()
+                        : SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              physics: const ClampingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: appController.typeUsers.length,
+                              itemBuilder: (context, index) => SizedBox(width: 100,
+                                child: InkWell(onTap: () {
+                                  if (appController.userModelLogins.isEmpty) {
+                        AppDialog(context: context).normalDialog(
+                            title: 'ยังไม่ได้ลงชื่อเข้าใช้งาน',
+                            detail: 'กรุณา ลงชื่อเข้าใช้งาน',
+                            firstBotton: WidgetTextButton(
+                              label: 'ลงชื่อเข้าใช้งาน',
+                              pressFunc: () {
+                                Get.back();
+                                Get.to(const Authen());
+                              },
+                            ));
+                      } else {
+                        Get.to(DisplayCategoryTechnic(
+                          category: appController.typeUsers[index],
+                          pathImage: 'images/category$index.png',
+                        ));
+                      }
+                                },
+                                  child: Card(
+                                    color: Colors.green.shade100,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        WidgetImage(
+                                          size: 48,
+                                          path: 'images/category$index.png',
+                                        ),
+                                        WidgetText(
+                                            text: appController.typeUsers[index]),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                    displayGridTech(appController),
+                    const WidgetShoehead(head: 'ผลงานช่างและบริการ :'),
+                    Divider(
+                      color: AppConstant.dark,
+                      thickness: 1,
+                    ),
+                    listreferance(appController, boxConstraints),
+                  ],
                 ),
-                listreferance(appController, boxConstraints),
+                Positioned(
+                  top: 165,
+                  child: SizedBox(
+                    width: boxConstraints.maxWidth,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        WidgetButtom(
+                          fontWeight: FontWeight.w700,
+                          textColor: Colors.black,
+                          color: Colors.white,
+                          label: 'เรียกรถพยาบาล\n         1669',
+                          pressFunc: () async {
+                            const url = 'tel:1669';
+                            Uri uri = Uri.parse(url);
+                            await canLaunchUrl(uri)
+                                ? await launchUrl(uri)
+                                : throw 'Cannot';
+                          },
+                        ),
+                        WidgetButtom(
+                          textColor: Colors.black,
+                          color: Colors.white,
+                          label: 'ประกาศงานสมาชิก',
+                          pressFunc: () {
+                            Get.to(const PostJobMember());
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ],
             );
           });
@@ -137,7 +228,9 @@ class _MainCenterState extends State<MainCenter> {
                             ),
                             Row(
                               children: [
-                                CachedNetworkImage(width: 48,height: 48,
+                                CachedNetworkImage(
+                                  width: 48,
+                                  height: 48,
                                   imageUrl: appController
                                       .referanceModels[index].urlImageTechnic,
                                   errorWidget: (context, url, error) =>

@@ -6,6 +6,7 @@ import 'package:goodtech/states/create_account_technic.dart';
 import 'package:goodtech/states/create_account_user.dart';
 import 'package:goodtech/states/main_home.dart';
 import 'package:goodtech/states/main_home_web.dart';
+import 'package:goodtech/states/navigator_page.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -30,9 +31,14 @@ var getPages = <GetPage<dynamic>>[
     name: AppConstant.pageMainHomeWeb,
     page: () => const MainHomeWeb(),
   ),
+  GetPage(
+    name: '/navigator',
+    page: () => const NavigatorPage(),
+  )
 ];
 
-String firstState = AppConstant.pageMainHome;
+// String firstState = AppConstant.pageMainHome;
+String firstState = '/navigator';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
