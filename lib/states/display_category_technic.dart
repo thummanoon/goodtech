@@ -72,11 +72,9 @@ class _DisplayCategoryTechnicState extends State<DisplayCategoryTechnic> {
         ),
         actions: [
           Container(
-              margin: const EdgeInsets.only(right: 36),
-              child: WidgetImage(
-                path: widget.pathImage,
-                size: 36,
-              ))
+            margin: const EdgeInsets.only(right: 36),
+            child: WidgetImageInternet(urlPath: widget.pathImage, width: 36,height: 36,), 
+          )
         ],
       ),
       body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
@@ -98,7 +96,8 @@ class _DisplayCategoryTechnicState extends State<DisplayCategoryTechnic> {
                                     .userModelDisplayTechnic[index]));
                           },
                           child: Card(
-                            child: Container(margin: const EdgeInsets.symmetric(vertical: 8),
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 8),
                               child: Row(
                                 children: [
                                   Container(
@@ -118,17 +117,18 @@ class _DisplayCategoryTechnicState extends State<DisplayCategoryTechnic> {
                                     ),
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       WidgetText(
                                         text: appController
-                                            .userModelDisplayTechnic[index].name,
+                                            .userModelDisplayTechnic[index]
+                                            .name,
                                         textStyle: AppConstant().h2Style(),
                                       ),
                                       WidgetText(
                                         text: appController
-                                            .provinceModels[index]
-                                            .subdistrict,
+                                            .provinceModels[index].subdistrict,
                                         textStyle: AppConstant().h3Style(
                                             color: Colors.blue.shade700),
                                       ),

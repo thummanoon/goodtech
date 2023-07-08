@@ -13,7 +13,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/check_payment_model.dart';
 import 'package:goodtech/models/message_model.dart';
+import 'package:goodtech/models/post_job_model.dart';
 import 'package:goodtech/models/province_model.dart';
+import 'package:goodtech/models/typeteachnic_model.dart';
 import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
@@ -23,6 +25,57 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class AppService {
+  AppController appController = Get.put(AppController());
+  Future<void> readPostJob() async {
+    if (appController.postJobModels.isNotEmpty) {
+      appController.postJobModels.clear();
+    }
+    await FirebaseFirestore.instance
+        .collection('postJob')
+        .orderBy('timestampPost', descending: true)
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        PostJobModel postJobModel = PostJobModel.fromMap(element.data());
+        appController.postJobModels.add(postJobModel);
+      }
+    });
+  }
+
+  Future<void> sendNotiAllTechnic(
+      {required String title, required String message}) async {
+    await FirebaseFirestore.instance
+        .collection('user')
+        .where('typeUser', isEqualTo: 'technic')
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        UserModel userModel = UserModel.fromMap(element.data());
+        if (userModel.token != null) {
+          processSendNoti(title: title, body: message, token: userModel.token!);
+        }
+      }
+    });
+  }
+
+  Future<void> readAllTypeTechnic() async {
+    if (appController.typeTechnicModels.isNotEmpty) {
+      appController.typeTechnicModels.clear();
+    }
+
+    await FirebaseFirestore.instance
+        .collection('typeteachnic')
+        .get()
+        .then((value) {
+      print('value --> ${value.docs.length}');
+      for (var element in value.docs) {
+        TypeTeachnicModel teachnicModel =
+            TypeTeachnicModel.fromMap(element.data());
+        appController.typeTechnicModels.add(teachnicModel);
+      }
+    });
+  }
+
   Future<ProvinceModel> findProvince(
       {required double lat, required double lng}) async {
     String urlAPI =

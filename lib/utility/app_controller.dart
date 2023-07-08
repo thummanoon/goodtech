@@ -8,10 +8,12 @@ import 'package:goodtech/models/banner_model.dart';
 import 'package:goodtech/models/chat_model.dart';
 import 'package:goodtech/models/check_payment_model.dart';
 import 'package:goodtech/models/message_model.dart';
+import 'package:goodtech/models/post_job_model.dart';
 import 'package:goodtech/models/province_model.dart';
 import 'package:goodtech/models/referance_modal.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
 import 'package:goodtech/models/user_model.dart';
+import 'package:goodtech/states/post_job_member.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_service.dart';
 
@@ -46,6 +48,9 @@ class AppController extends GetxController {
   RxInt indexBodyMobile = 0.obs;
   RxList<DateTime> jobDateTimes = <DateTime>[].obs;
   RxList<TimeOfDay> jobTimeOfDates = <TimeOfDay>[].obs;
+
+  RxList<TypeTeachnicModel> typeTechnicModels = <TypeTeachnicModel>[].obs;
+  RxList<PostJobModel> postJobModels = <PostJobModel>[].obs;
 
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {

@@ -27,7 +27,7 @@ class _PostJobMemberState extends State<PostJobMember> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: WidgetText(text: 'ประกาศงานสมาชิก'),
+        title: WidgetText(text: 'ประกาศงานหาช่าง'),
       ),
       body: GetX(
           init: AppController(),
@@ -137,7 +137,11 @@ class _PostJobMemberState extends State<PostJobMember> {
                               .then((value) {
                             appController.jobDateTimes.clear();
                             appController.jobTimeOfDates.clear();
-                            Get.back();
+
+                            AppService().sendNotiAllTechnic(
+                                title: name! , message: 'งบประมาณ $barget');
+
+                            // Get.back();
                           });
                         }
                       },

@@ -37,6 +37,7 @@ class _MainCenterState extends State<MainCenter> {
     controller.readBanner();
     controller.readTechnicUserModel();
     controller.readAllReferance();
+    AppService().readAllTypeTechnic();
   }
 
   List<Widget> createWidgets() {
@@ -109,7 +110,7 @@ class _MainCenterState extends State<MainCenter> {
                             WidgetButtom(
                               textColor: Colors.black,
                               color: Colors.white,
-                              label: 'ประกาศงานสมาชิก',
+                              label: 'ประกาศงานหาช่าง',
                               pressFunc: () {
                                 if (appController.userModelLogins.isEmpty) {
                                   AppDialog(context: context).normalDialog(
@@ -133,7 +134,7 @@ class _MainCenterState extends State<MainCenter> {
                     )
                   ],
                 ),
-                appController.typeUsers.isEmpty
+                appController.typeTechnicModels.isEmpty
                     ? const SizedBox()
                     : SizedBox(
                         height: 100,
@@ -141,7 +142,7 @@ class _MainCenterState extends State<MainCenter> {
                           scrollDirection: Axis.horizontal,
                           physics: const ClampingScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: appController.typeUsers.length,
+                          itemCount: appController.typeTechnicModels.length,
                           itemBuilder: (context, index) => SizedBox(
                             width: 100,
                             child: InkWell(
@@ -159,8 +160,8 @@ class _MainCenterState extends State<MainCenter> {
                                       ));
                                 } else {
                                   Get.to(DisplayCategoryTechnic(
-                                    category: appController.typeUsers[index],
-                                    pathImage: 'images/category$index.png',
+                                    category: appController.typeTechnicModels[index].name,
+                                    pathImage: appController.typeTechnicModels[index].url,
                                   ));
                                 }
                               },
@@ -169,12 +170,9 @@ class _MainCenterState extends State<MainCenter> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    WidgetImage(
-                                      size: 48,
-                                      path: 'images/category$index.png',
-                                    ),
+                                    WidgetImageInternet(urlPath: appController.typeTechnicModels[index].url, width: 48,height: 48,),
                                     WidgetText(
-                                        text: appController.typeUsers[index]),
+                                        text: appController.typeTechnicModels[index].name),
                                   ],
                                 ),
                               ),

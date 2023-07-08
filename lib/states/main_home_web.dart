@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:goodtech/states/manage_cat_web.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
@@ -34,14 +35,24 @@ class _MainHomeWebState extends State<MainHomeWeb> {
           text: 'Main Home Web',
           textStyle: AppConstant().h2Style(),
         ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            child: WidgetButtom(
+              label: 'Manage Cat',
+              pressFunc: () {
+                Get.to(const ManageCatWeb());
+              },
+            ),
+          )
+        ],
       ),
       body: GetX(
           init: AppController(),
           builder: (AppController appController) {
             print(
                 '##20mar checkPaymenModel ---> ${appController.checkPaymentModels.length}');
-                 print(
-                '##20mar userModel ---> ${appController.userModels.length}');
+            print('##20mar userModel ---> ${appController.userModels.length}');
             return ((appController.checkPaymentModels.isEmpty) ||
                     (appController.userModels.isEmpty))
                 ? const SizedBox()
@@ -168,7 +179,10 @@ class _MainHomeWebState extends State<MainHomeWeb> {
                                                                 'ยอดเงินเข้าระบบแล้ว',
                                                             body:
                                                                 'โปรดเช็คยอดเงินในโปรไฟล์ ',
-                                                            token: appController.userModels[index].token!);
+                                                            token: appController
+                                                                .userModels[
+                                                                    index]
+                                                                .token!);
 
                                                         Get.back();
                                                         AppService()

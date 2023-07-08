@@ -98,7 +98,7 @@ class _MainHomeState extends State<MainHome> {
             drawer: load
                 ? const WidgetProgress()
                 : Drawer(
-                    child: Column(
+                    child: ListView(
                       children: [
                         headDrawer(appController),
                         WidgetMenu(
@@ -178,7 +178,7 @@ class _MainHomeState extends State<MainHome> {
                             Get.back();
                           },
                         ),
-                        const Spacer(),
+                        // const Spacer(),
                         Divider(
                           color: AppConstant.dark,
                         ),
