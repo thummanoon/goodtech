@@ -57,7 +57,7 @@ def keystoreProperties = new Properties()
         minSdkVersion 22
         targetSdkVersion 31
         versionCode 6
-        versionName '1.0.6'
+        versionName '1.0.7'
     }
 
        signingConfigs {
