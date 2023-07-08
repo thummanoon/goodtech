@@ -23,6 +23,7 @@ class AppController extends GetxController {
   RxInt indexBody = 0.obs;
   RxBool loadReferance = true.obs;
   RxList<UserModel> userModelLogins = <UserModel>[].obs;
+
   RxList<String> uidLogins = <String>[].obs;
   RxList<UserModel> userModels = <UserModel>[].obs;
   RxList<String> docIdUsers = <String>[].obs;
@@ -30,7 +31,10 @@ class AppController extends GetxController {
   RxList<String> typeUsers = <String>[].obs;
   RxList<ReferanceModel> referanceModels = <ReferanceModel>[].obs;
   RxList<BannerModel> bannerModels = <BannerModel>[].obs;
+
   RxList<UserModel> technicUserModels = <UserModel>[].obs;
+  RxList<UserModel> haveImagetechnicUserModels = <UserModel>[].obs;
+
   RxList<String> docIdChats = <String>[].obs;
   RxList<String> messageChats = <String>[].obs;
   RxList<MessageModel> messageModels = <MessageModel>[].obs;
@@ -51,6 +55,7 @@ class AppController extends GetxController {
 
   RxList<TypeTeachnicModel> typeTechnicModels = <TypeTeachnicModel>[].obs;
   RxList<PostJobModel> postJobModels = <PostJobModel>[].obs;
+  RxInt amountNoti = 0.obs;
 
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {
@@ -203,6 +208,7 @@ class AppController extends GetxController {
   Future<void> readTechnicUserModel() async {
     if (technicUserModels.isNotEmpty) {
       technicUserModels.clear();
+      haveImagetechnicUserModels.clear();
     }
 
     await FirebaseFirestore.instance
@@ -213,6 +219,9 @@ class AppController extends GetxController {
       for (var element in value.docs) {
         UserModel model = UserModel.fromMap(element.data());
         technicUserModels.add(model);
+        if (model.urlProfile!.isNotEmpty) {
+          haveImagetechnicUserModels.add(model);
+        }
       }
     });
   }

@@ -231,9 +231,7 @@ class _DisplayProfileTechnicState extends State<DisplayProfileTechnic> {
       children: [
         WidgetShowProfile(
             radius: 125,
-            urlImage: userModelTechnic!.urlProfile!.isEmpty
-                ? AppConstant.urlFreeProfile
-                : userModelTechnic!.urlProfile!),
+            urlImage:  userModelTechnic!.urlProfile!),
       ],
     );
   }

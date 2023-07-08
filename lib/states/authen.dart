@@ -98,7 +98,7 @@ class _AuthenState extends State<Authen> {
                   .signInWithEmailAndPassword(
                       email: email!, password: password!)
                   .then((value) {
-                Get.offAllNamed(AppConstant.pageMainHome);
+                Get.offAllNamed('/navigator');
               }).catchError((onError) {
                 AppDialog(context: context)
                     .normalDialog(title: onError.code, detail: onError.message);

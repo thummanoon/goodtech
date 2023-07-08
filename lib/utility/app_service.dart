@@ -26,6 +26,16 @@ import 'package:intl/intl.dart';
 
 class AppService {
   AppController appController = Get.put(AppController());
+
+  Future<void> realTimePostJob() async {
+    FirebaseFirestore.instance
+        .collection('postJob')
+        .snapshots()
+        .listen((event) {
+      appController.amountNoti.value = event.docs.length;
+    });
+  }
+
   Future<void> readPostJob() async {
     if (appController.postJobModels.isNotEmpty) {
       appController.postJobModels.clear();

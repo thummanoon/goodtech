@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goodtech/widgets/widget_text.dart';
 
 class WidgetShowProfile extends StatelessWidget {
   const WidgetShowProfile({
@@ -12,10 +13,16 @@ class WidgetShowProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundImage: NetworkImage(urlImage),
-      backgroundColor: Colors.white,
-      radius: radius,
-    );
+    return urlImage.isEmpty
+        ? Container(alignment: Alignment.center,
+            width: radius,
+            height: radius,
+            child: WidgetText(text: 'No Image'),
+          )
+        : CircleAvatar(
+            backgroundImage: NetworkImage(urlImage),
+            backgroundColor: Colors.white,
+            radius: radius,
+          );
   }
 }

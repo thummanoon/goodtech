@@ -97,98 +97,102 @@ class _MainHomeState extends State<MainHome> {
             ),
             drawer: load
                 ? const WidgetProgress()
-                : Drawer(
-                    child: ListView(
-                      children: [
-                        headDrawer(appController),
-                        WidgetMenu(
-                          leadWidget: const WidgetImage(
-                            path: 'images/home.png',
-                            size: 35,
-                          ),
-                          title: 'หน้าแรก',
-                          tapFunc: () {
-                            appController.indexBody.value = 0;
-                            Get.back();
-                          },
-                        ),
-                        statusLogin!
-                            ? appController.userModelLogins[0].typeUser ==
-                                    AppConstant.typeUsers[1]
-                                ? Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      WidgetMenu(
-                                        leadWidget: const WidgetImage(
-                                          path: 'images/messag.png',
-                                          size: 35,
-                                        ),
-                                        title: 'ข่าวสาร',
-                                        subTitle: const WidgetText(
-                                            text: 'ข่าวสารสำหรับช่าง'),
-                                        tapFunc: () {
-                                          appController.indexBody.value = 1;
-                                          Get.back();
-                                        },
-                                      ),
-                                      WidgetMenu(
-                                        leadWidget: const WidgetImage(
-                                          path: 'images/profine.png',
-                                          size: 35,
-                                        ),
-                                        title: 'ข้อมูลช่างและบริการ',
-                                        tapFunc: () {
-                                          appController.indexBody.value = 2;
-                                          Get.back();
-                                        },
-                                      ),
-                                      WidgetMenu(
-                                        leadWidget: const WidgetImage(
-                                          path: 'images/referent.png',
-                                          size: 35,
-                                        ),
-                                        title: 'ผลงานที่ผ่านมา',
-                                        tapFunc: () {
-                                          appController.indexBody.value = 3;
-                                          Get.back();
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                : WidgetMenu(
-                                    leadWidget: const WidgetImage(
-                                      path: 'images/messag.png',
-                                    ),
-                                    title: 'ข่าวสาร',
-                                    subTitle: const WidgetText(
-                                        text: 'ข่าวสารสำหรับสมาชิก'),
-                                    tapFunc: () {
-                                      appController.indexBody.value = 4;
-                                      Get.back();
-                                    },
-                                  )
-                            : const SizedBox(),
-                        WidgetMenu(
-                          leadWidget: const WidgetImage(
-                            path: 'images/category.png',
-                          ),
-                          title: 'กลุ่มของช่างและบริการ',
-                          tapFunc: () {
-                            appController.indexBody.value = 5;
-                            Get.back();
-                          },
-                        ),
-                        // const Spacer(),
-                        Divider(
-                          color: AppConstant.dark,
-                        ),
-                        statusLogin! ? menuSignOut() : menuAuthen(),
-                      ],
-                    ),
-                  ),
+                : mainDrawer(appController),
             body: bodys[appController.indexBody.value],
           );
         });
+  }
+
+  Drawer mainDrawer(AppController appController) {
+    return Drawer(
+                  child: ListView(
+                    children: [
+                      headDrawer(appController),
+                      WidgetMenu(
+                        leadWidget: const WidgetImage(
+                          path: 'images/home.png',
+                          size: 35,
+                        ),
+                        title: 'หน้าแรก',
+                        tapFunc: () {
+                          appController.indexBody.value = 0;
+                          Get.back();
+                        },
+                      ),
+                      statusLogin!
+                          ? appController.userModelLogins[0].typeUser ==
+                                  AppConstant.typeUsers[1]
+                              ? Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    WidgetMenu(
+                                      leadWidget: const WidgetImage(
+                                        path: 'images/messag.png',
+                                        size: 35,
+                                      ),
+                                      title: 'ข่าวสาร',
+                                      subTitle: const WidgetText(
+                                          text: 'ข่าวสารสำหรับช่าง'),
+                                      tapFunc: () {
+                                        appController.indexBody.value = 1;
+                                        Get.back();
+                                      },
+                                    ),
+                                    WidgetMenu(
+                                      leadWidget: const WidgetImage(
+                                        path: 'images/profine.png',
+                                        size: 35,
+                                      ),
+                                      title: 'ข้อมูลช่างและบริการ',
+                                      tapFunc: () {
+                                        appController.indexBody.value = 2;
+                                        Get.back();
+                                      },
+                                    ),
+                                    WidgetMenu(
+                                      leadWidget: const WidgetImage(
+                                        path: 'images/referent.png',
+                                        size: 35,
+                                      ),
+                                      title: 'ผลงานที่ผ่านมา',
+                                      tapFunc: () {
+                                        appController.indexBody.value = 3;
+                                        Get.back();
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : WidgetMenu(
+                                  leadWidget: const WidgetImage(
+                                    path: 'images/messag.png',
+                                  ),
+                                  title: 'ข่าวสาร',
+                                  subTitle: const WidgetText(
+                                      text: 'ข่าวสารสำหรับสมาชิก'),
+                                  tapFunc: () {
+                                    appController.indexBody.value = 4;
+                                    Get.back();
+                                  },
+                                )
+                          : const SizedBox(),
+                      WidgetMenu(
+                        leadWidget: const WidgetImage(
+                          path: 'images/category.png',
+                        ),
+                        title: 'กลุ่มของช่างและบริการ',
+                        tapFunc: () {
+                          appController.indexBody.value = 5;
+                          Get.back();
+                        },
+                      ),
+                      // const Spacer(),
+                      Divider(
+                        color: AppConstant.dark,
+                      ),
+                      statusLogin! ? menuSignOut() : menuAuthen(),
+                    ],
+                  ),
+                );
   }
 
   UserAccountsDrawerHeader headDrawer(AppController appController) {

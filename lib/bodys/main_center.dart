@@ -6,6 +6,7 @@ import 'package:goodtech/models/user_model.dart';
 import 'package:goodtech/states/authen.dart';
 import 'package:goodtech/states/display_category_technic.dart';
 import 'package:goodtech/states/display_profile_technic.dart';
+import 'package:goodtech/states/list_all_technic.dart';
 import 'package:goodtech/states/post_job_member.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
@@ -160,8 +161,10 @@ class _MainCenterState extends State<MainCenter> {
                                       ));
                                 } else {
                                   Get.to(DisplayCategoryTechnic(
-                                    category: appController.typeTechnicModels[index].name,
-                                    pathImage: appController.typeTechnicModels[index].url,
+                                    category: appController
+                                        .typeTechnicModels[index].name,
+                                    pathImage: appController
+                                        .typeTechnicModels[index].url,
                                   ));
                                 }
                               },
@@ -170,9 +173,15 @@ class _MainCenterState extends State<MainCenter> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    WidgetImageInternet(urlPath: appController.typeTechnicModels[index].url, width: 48,height: 48,),
+                                    WidgetImageInternet(
+                                      urlPath: appController
+                                          .typeTechnicModels[index].url,
+                                      width: 48,
+                                      height: 48,
+                                    ),
                                     WidgetText(
-                                        text: appController.typeTechnicModels[index].name),
+                                        text: appController
+                                            .typeTechnicModels[index].name),
                                   ],
                                 ),
                               ),
@@ -181,6 +190,17 @@ class _MainCenterState extends State<MainCenter> {
                         ),
                       ),
                 displayGridTech(appController),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    WidgetTextButton(
+                      label: 'ดูทั้งหมด',
+                      pressFunc: () {
+                        Get.to(const ListAllTechnic());
+                      },
+                    ),
+                  ],
+                ),
                 const WidgetShoehead(head: 'ผลงานช่างและบริการ :'),
                 Divider(
                   color: AppConstant.dark,
@@ -231,7 +251,7 @@ class _MainCenterState extends State<MainCenter> {
                               text: AppService().cutWord(
                                   word: appController
                                       .referanceModels[index].nameJob,
-                                  length: 25),
+                                  length: 20),
                               textStyle: AppConstant()
                                   .h3Style(fontWeight: FontWeight.w700),
                             ),
@@ -255,8 +275,10 @@ class _MainCenterState extends State<MainCenter> {
                                           urlPath: AppConstant.urlFreeProfile),
                                 ),
                                 WidgetText(
-                                    text: appController
-                                        .referanceModels[index].nameTechnic),
+                                    text: AppService().cutWord(
+                                        word: appController
+                                            .referanceModels[index].nameTechnic,
+                                        length: 20)),
                               ],
                             )
                           ],
@@ -280,7 +302,8 @@ class _MainCenterState extends State<MainCenter> {
         : GridView.builder(
             shrinkWrap: true,
             physics: const ScrollPhysics(),
-            itemCount: appController.technicUserModels.length,
+            // itemCount: appController.technicUserModels.length,
+            itemCount: 6,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 10 / 12, crossAxisCount: 3),
             itemBuilder: (context, index) => InkWell(
@@ -317,14 +340,12 @@ class _MainCenterState extends State<MainCenter> {
                           width: 100,
                           height: 100,
                           urlPath: appController
-                                  .technicUserModels[index].urlProfile!.isEmpty
-                              ? AppConstant.urlFreeProfile
-                              : appController
-                                  .technicUserModels[index].urlProfile!),
+                              .haveImagetechnicUserModels[index].urlProfile!),
                     ),
                     WidgetText(
                       text: AppService().cutWord(
-                          word: appController.technicUserModels[index].name,
+                          word: appController
+                              .haveImagetechnicUserModels[index].name,
                           length: 12),
                       textStyle:
                           AppConstant().h3Style(fontWeight: FontWeight.w700),
