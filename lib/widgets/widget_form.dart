@@ -11,6 +11,7 @@ class WidgetForm extends StatelessWidget {
     this.textInputType,
     this.textEditingController,
     this.marginTop,
+    this.fillColor,
   }) : super(key: key);
 
   final String? hint;
@@ -21,6 +22,7 @@ class WidgetForm extends StatelessWidget {
   final TextInputType? textInputType;
   final TextEditingController? textEditingController;
   final double? marginTop;
+  final Color? fillColor;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class WidgetForm extends StatelessWidget {
         decoration: InputDecoration(
           label: labelWidget,
           suffixIcon: suffixWidget,
-          filled: true,
+          filled: true,fillColor: fillColor,
           contentPadding:
               const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
           enabledBorder:

@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:goodtech/models/check_payment_model.dart';
 import 'package:goodtech/models/message_model.dart';
 import 'package:goodtech/models/post_job_model.dart';
+import 'package:goodtech/models/post_model.dart';
 import 'package:goodtech/models/province_model.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
 import 'package:goodtech/models/user_model.dart';
@@ -24,8 +25,64 @@ import 'package:goodtech/widgets/widget_text_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../models/referance_modal.dart';
+
 class AppService {
   AppController appController = Get.put(AppController());
+
+  Future<void> readPost({required String docIdReferance}) async {
+    FirebaseFirestore.instance
+        .collection('referance')
+        .doc(docIdReferance)
+        .collection('post')
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          PostModel postModel = PostModel.fromMap(element.data());
+          appController.postModels.add(postModel);
+        }
+      }
+    });
+  }
+
+  Future<void> findUserModelLogin() async {
+    var user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user!.uid)
+          .get()
+          .then((value) {
+        UserModel userModel = UserModel.fromMap(value.data()!);
+        print('userModel ---------> ${userModel.toMap()}');
+        appController.userModelLogins.add(userModel);
+      });
+    }
+  }
+
+  Future<void> readFirstReferance() async {
+    if (appController.referanceModels.isNotEmpty) {
+      appController.referanceModels.clear();
+      appController.docReferances.clear();
+    }
+
+    await FirebaseFirestore.instance
+        .collection('referance')
+        .orderBy('timestampUpdate', descending: true)
+        .limit(50)
+        .get()
+        .then((value) async {
+      if (value.docs.isNotEmpty) {
+        for (var element in value.docs) {
+          ReferanceModel model = ReferanceModel.fromMap(element.data());
+          appController.referanceModels.add(model);
+          appController.docReferances.add(element.id);
+        }
+      }
+    });
+  }
 
   Future<void> realTimePostJob() async {
     FirebaseFirestore.instance

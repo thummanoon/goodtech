@@ -7,12 +7,14 @@ class WidgetIconButton extends StatelessWidget {
     required this.pressFunc,
     this.iconColor,
     this.tooltip,
+    this.size,
   }) : super(key: key);
 
   final IconData iconData;
   final Function() pressFunc;
   final Color? iconColor;
   final String? tooltip;
+  final double? size;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class WidgetIconButton extends StatelessWidget {
       onPressed: pressFunc,
       icon: Icon(
         iconData,
-        color: iconColor,
+        color: iconColor,size: size,
       ),
       tooltip: tooltip,
     );

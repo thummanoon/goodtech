@@ -12,6 +12,10 @@ class WidgetText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: textStyle,);
+    return Text(
+      text,
+      style: textStyle,
+      
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goodtech/states/list_page.dart';
 import 'package:goodtech/states/navigator_page.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -7,6 +8,11 @@ class UpgradeAlertPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: UpgradeAlert(child: const NavigatorPage(),));
+    return Scaffold(
+      body: UpgradeAlert(
+        // child: const NavigatorPage(),
+        child: const ListPage(),
+      ),
+    );
   }
 }

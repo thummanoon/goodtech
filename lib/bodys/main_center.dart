@@ -322,7 +322,7 @@ class _MainCenterState extends State<MainCenter> {
                 } else {
                   Get.to(DisplayProfileTechnic(
                           userModelTechnic:
-                              appController.technicUserModels[index]))!
+                              appController.haveImagetechnicUserModels[index]))!
                       .then((value) {
                     appController.readAllReferance();
                   });

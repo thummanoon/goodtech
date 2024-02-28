@@ -9,6 +9,7 @@ import 'package:goodtech/models/chat_model.dart';
 import 'package:goodtech/models/check_payment_model.dart';
 import 'package:goodtech/models/message_model.dart';
 import 'package:goodtech/models/post_job_model.dart';
+import 'package:goodtech/models/post_model.dart';
 import 'package:goodtech/models/province_model.dart';
 import 'package:goodtech/models/referance_modal.dart';
 import 'package:goodtech/models/typeteachnic_model.dart';
@@ -30,6 +31,7 @@ class AppController extends GetxController {
   RxList<File> files = <File>[].obs;
   RxList<String> typeUsers = <String>[].obs;
   RxList<ReferanceModel> referanceModels = <ReferanceModel>[].obs;
+  RxList<String> docReferances = <String>[].obs;
   RxList<BannerModel> bannerModels = <BannerModel>[].obs;
 
   RxList<UserModel> technicUserModels = <UserModel>[].obs;
@@ -56,6 +58,8 @@ class AppController extends GetxController {
   RxList<TypeTeachnicModel> typeTechnicModels = <TypeTeachnicModel>[].obs;
   RxList<PostJobModel> postJobModels = <PostJobModel>[].obs;
   RxInt amountNoti = 0.obs;
+  RxInt indexPage = 0.obs;
+  RxList<PostModel> postModels = <PostModel>[].obs;
 
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {
@@ -246,6 +250,8 @@ class AppController extends GetxController {
 
     await FirebaseFirestore.instance
         .collection('referance')
+        .orderBy('timestampUpdate', descending: true)
+        .limit(10)
         .get()
         .then((value) async {
       loadReferance.value = false;
