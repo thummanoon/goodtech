@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:goodtech/models/post_model.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
+import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/utility/app_service.dart';
 import 'package:goodtech/widgets/widget_buttom.dart';
 import 'package:goodtech/widgets/widget_form.dart';
@@ -11,6 +12,7 @@ import 'package:goodtech/widgets/widget_icon_button.dart';
 import 'package:goodtech/widgets/widget_image_internet.dart';
 import 'package:goodtech/widgets/widget_show_profile.dart';
 import 'package:goodtech/widgets/widget_text.dart';
+import 'package:goodtech/widgets/widget_text_button.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({Key? key}) : super(key: key);
@@ -88,7 +90,8 @@ class _ListPageState extends State<ListPage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(width: boxConstraints.maxWidth * 0.55,
+                                    SizedBox(
+                                      width: boxConstraints.maxWidth * 0.55,
                                       child: WidgetText(
                                         text: appController
                                             .referanceModels[index].nameTechnic,
@@ -166,7 +169,8 @@ class _ListPageState extends State<ListPage> {
           children: [
             SizedBox(
               width: Get.width * 0.8,
-              child: WidgetForm(hint: 'ส่งข้อความ :',
+              child: WidgetForm(
+                hint: 'ส่งข้อความ :',
                 changeFunc: (p0) {},
                 marginTop: 0,
                 fillColor: Colors.white,
@@ -177,30 +181,48 @@ class _ListPageState extends State<ListPage> {
               iconData: Icons.send,
               iconColor: Colors.amber,
               pressFunc: () async {
-                if (textEditingController.text.isNotEmpty) {
-                  print(
-                      'post ---> ${textEditingController.text}, docReferance ----> ${appController.docReferances[appController.indexPage.value]}');
-
-                  PostModel postModel = PostModel(
-                    post: textEditingController.text,
-                    timestamp: Timestamp.fromDate(DateTime.now()),
-                    mapPost: appController.userModelLogins.last.toMap(),
+                if (appController.userModelLogins.isEmpty) {
+                  // ไม่ได้ Login
+                  AppDialog(context: context).normalDialog(
+                    title: 'ยังไม่ได้สมัครสมาชิก',
+                    detail: 'กรุณาสมัครสมาชิกก่อน',
+                    firstBotton: WidgetTextButton(
+                      label: 'Login',
+                      pressFunc: () {},
+                    ),
+                    secondBotton: WidgetTextButton(
+                      label: 'สมัครสมาชิก',
+                      pressFunc: () {},
+                    ),
                   );
-
-                  print('postModel ----> ${postModel.toMap()}');
-
-                  FirebaseFirestore.instance
-                      .collection('referance')
-                      .doc(appController
-                          .docReferances[appController.indexPage.value])
-                      .collection('post')
-                      .doc()
-                      .set(postModel.toMap())
-                      .then((value) {
-                    print('### insert post Success');
-                    textEditingController.text = '';
-                  });
+                } else {
+                  // Logined
                 }
+
+                // if (textEditingController.text.isNotEmpty) {
+                //   print(
+                //       'post ---> ${textEditingController.text}, docReferance ----> ${appController.docReferances[appController.indexPage.value]}');
+
+                //   PostModel postModel = PostModel(
+                //     post: textEditingController.text,
+                //     timestamp: Timestamp.fromDate(DateTime.now()),
+                //     mapPost: appController.userModelLogins.last.toMap(),
+                //   );
+
+                //   print('postModel ----> ${postModel.toMap()}');
+
+                //   FirebaseFirestore.instance
+                //       .collection('referance')
+                //       .doc(appController
+                //           .docReferances[appController.indexPage.value])
+                //       .collection('post')
+                //       .doc()
+                //       .set(postModel.toMap())
+                //       .then((value) {
+                //     print('### insert post Success');
+                //     textEditingController.text = '';
+                //   });
+                // }
               },
             )
           ],
