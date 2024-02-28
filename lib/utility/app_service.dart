@@ -81,6 +81,8 @@ class AppService {
           appController.docReferances.add(element.id);
         }
       }
+    }).catchError((onError) {
+      print('##28feb onError ---> $onError');
     });
   }
 

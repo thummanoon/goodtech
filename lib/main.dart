@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:goodtech/states/authen.dart';
 import 'package:goodtech/states/create_account_technic.dart';
 import 'package:goodtech/states/create_account_user.dart';
+import 'package:goodtech/states/list_page.dart';
 import 'package:goodtech/states/main_home.dart';
 import 'package:goodtech/states/main_home_web.dart';
 import 'package:goodtech/states/navigator_page.dart';
-import 'package:goodtech/states/upgrade_alert_page.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -38,11 +38,11 @@ var getPages = <GetPage<dynamic>>[
     name: '/navigator',
     page: () => const NavigatorPage(),
   ),
-  GetPage(name: '/upgrade', page: () => const UpgradeAlertPage(),)
+  GetPage(name: '/listPage', page: () => const ListPage(),)
 ];
 
 // String firstState = AppConstant.pageMainHome;
-String firstState = '/upgrade';
+String firstState = '/listPage';
 
 Future<void> main() async {
   HttpOverrides.global = MyHttpOverride();

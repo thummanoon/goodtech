@@ -42,9 +42,9 @@ class WidgetForm extends StatelessWidget {
           contentPadding:
               const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
           enabledBorder:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
           focusedBorder:
-              OutlineInputBorder(borderRadius: BorderRadius.circular(30)),
+              OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
           hintText: hint,
         ),
       ),

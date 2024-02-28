@@ -29,11 +29,12 @@ class _ListPageState extends State<ListPage> {
     super.initState();
     AppService().findUserModelLogin().then((value) {
       print(
-          'userModel at List page ---> ${appController.userModelLogins.length}');
+          '##28feb userModel at List page ---> ${appController.userModelLogins.length}');
     });
 
     AppService().readFirstReferance().then((value) {
-      print('referenceModel ---> ${appController.referanceModels.length}');
+      print(
+          '##28feb referenceModel ---> ${appController.referanceModels.length}');
 
       pageController =
           PageController(initialPage: appController.indexPage.value);
@@ -87,11 +88,13 @@ class _ListPageState extends State<ListPage> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    WidgetText(
-                                      text: appController
-                                          .referanceModels[index].nameTechnic,
-                                      textStyle: AppConstant()
-                                          .h2Style(color: Colors.white),
+                                    SizedBox(width: boxConstraints.maxWidth * 0.55,
+                                      child: WidgetText(
+                                        text: appController
+                                            .referanceModels[index].nameTechnic,
+                                        textStyle: AppConstant()
+                                            .h2Style(color: Colors.white),
+                                      ),
                                     ),
                                     SizedBox(
                                       width: boxConstraints.maxWidth * 0.55,
@@ -156,18 +159,23 @@ class _ListPageState extends State<ListPage> {
         });
       }),
       bottomSheet: Container(
+        width: Get.width,
         decoration: const BoxDecoration(color: Colors.black),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            WidgetForm(
-              changeFunc: (p0) {},
-              marginTop: 0,
-              fillColor: Colors.white,
-              textEditingController: textEditingController,
+            SizedBox(
+              width: Get.width * 0.8,
+              child: WidgetForm(hint: 'ส่งข้อความ :',
+                changeFunc: (p0) {},
+                marginTop: 0,
+                fillColor: Colors.white,
+                textEditingController: textEditingController,
+              ),
             ),
-            WidgetButtom(
-              label: 'ส่งข้อความ',
+            WidgetIconButton(
+              iconData: Icons.send,
+              iconColor: Colors.amber,
               pressFunc: () async {
                 if (textEditingController.text.isNotEmpty) {
                   print(
