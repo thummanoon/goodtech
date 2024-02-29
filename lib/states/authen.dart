@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:goodtech/states/choose_type.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
@@ -14,7 +15,12 @@ import 'package:goodtech/widgets/widget_text.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
 
 class Authen extends StatefulWidget {
-  const Authen({Key? key}) : super(key: key);
+  const Authen({
+    Key? key,
+    this.fromListPsge,
+  }) : super(key: key);
+
+  final bool? fromListPsge;
 
   @override
   State<Authen> createState() => _AuthenState();
@@ -31,7 +37,7 @@ class _AuthenState extends State<Authen> {
             builder: (AppController appController) {
               return SafeArea(
                 child: GestureDetector(
-                  behavior: HitTestBehavior.opaque, 
+                  behavior: HitTestBehavior.opaque,
                   onTap: () =>
                       FocusScope.of(context).requestFocus(FocusScopeNode()),
                   child: Stack(
@@ -98,7 +104,11 @@ class _AuthenState extends State<Authen> {
                   .signInWithEmailAndPassword(
                       email: email!, password: password!)
                   .then((value) {
-                Get.offAllNamed('/navigator');
+                if (widget.fromListPsge ?? false) {
+                  Get.back();
+                } else {
+                  Get.offAllNamed('/navigator');
+                }
               }).catchError((onError) {
                 AppDialog(context: context)
                     .normalDialog(title: onError.code, detail: onError.message);

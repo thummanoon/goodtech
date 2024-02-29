@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/post_model.dart';
+import 'package:goodtech/states/authen.dart';
 import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
@@ -199,41 +200,55 @@ class _ListPageState extends State<ListPage> {
                     detail: 'กรุณาสมัครสมาชิกก่อน',
                     firstBotton: WidgetTextButton(
                       label: 'Login',
-                      pressFunc: () {},
+                      pressFunc: () {
+                        Get.back();
+                        Get.to(const Authen(
+                          fromListPsge: true,
+                        ))?.then((value) {
+                          AppService().findUserModelLogin();
+                        });
+                      },
                     ),
                     secondBotton: WidgetTextButton(
                       label: 'สมัครสมาชิก',
-                      pressFunc: () {},
+                      pressFunc: () {
+                        Get.back();
+                        Get.toNamed(AppConstant.pageAccountUser);
+                      },
                     ),
                   );
                 } else {
                   // Logined
+
+                  if (textEditingController.text.isNotEmpty) {
+                    print(
+                        'post ---> ${textEditingController.text}, docReferance ----> ${appController.docReferances[appController.indexPage.value]}');
+
+                    PostModel postModel = PostModel(
+                      post: textEditingController.text,
+                      timestamp: Timestamp.fromDate(DateTime.now()),
+                      mapPost: appController.userModelLogins.last.toMap(),
+                    );
+
+                    print('postModel ----> ${postModel.toMap()}');
+
+                    FirebaseFirestore.instance
+                        .collection('referance')
+                        .doc(appController
+                            .docReferances[appController.indexPage.value])
+                        .collection('post')
+                        .doc()
+                        .set(postModel.toMap())
+                        .then((value) {
+                          
+                      print('### insert post Success');
+                      textEditingController.text = '';
+                    });
+
+
+
+                  }       //if
                 }
-
-                // if (textEditingController.text.isNotEmpty) {
-                //   print(
-                //       'post ---> ${textEditingController.text}, docReferance ----> ${appController.docReferances[appController.indexPage.value]}');
-
-                //   PostModel postModel = PostModel(
-                //     post: textEditingController.text,
-                //     timestamp: Timestamp.fromDate(DateTime.now()),
-                //     mapPost: appController.userModelLogins.last.toMap(),
-                //   );
-
-                //   print('postModel ----> ${postModel.toMap()}');
-
-                //   FirebaseFirestore.instance
-                //       .collection('referance')
-                //       .doc(appController
-                //           .docReferances[appController.indexPage.value])
-                //       .collection('post')
-                //       .doc()
-                //       .set(postModel.toMap())
-                //       .then((value) {
-                //     print('### insert post Success');
-                //     textEditingController.text = '';
-                //   });
-                // }
               },
             )
           ],

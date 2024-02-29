@@ -36,7 +36,7 @@ class WidgetButtom extends StatelessWidget {
           child: WidgetText(
             text: label,
             textStyle: AppConstant().h3Style(
-                color: textColor ?? AppConstant.bgColor,
+                color: textColor ?? AppConstant.dark,
                 fontWeight: fontWeight),
           )),
     );
