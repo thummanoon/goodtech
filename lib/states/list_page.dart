@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/models/post_model.dart';
 import 'package:goodtech/utility/app_constant.dart';
@@ -13,6 +14,7 @@ import 'package:goodtech/widgets/widget_image_internet.dart';
 import 'package:goodtech/widgets/widget_show_profile.dart';
 import 'package:goodtech/widgets/widget_text.dart';
 import 'package:goodtech/widgets/widget_text_button.dart';
+import 'package:goodtech/widgets/widget_text_expan.dart';
 
 class ListPage extends StatefulWidget {
   const ListPage({Key? key}) : super(key: key);
@@ -50,117 +52,126 @@ class _ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
-        return Obx(() {
-          return appController.referanceModels.isEmpty
-              ? const SizedBox()
-              : PageView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: appController.referanceModels.length,
-                  itemBuilder: (context, index) => GestureDetector(
-                    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-                    child: Stack(
-                      children: [
-                        WidgetImageInternet(
-                          urlPath: appController.referanceModels[index].urlJob,
-                          width: boxConstraints.maxWidth,
-                          height: boxConstraints.maxHeight,
-                        ),
-                        Positioned(
-                          top: 48,
-                          left: 16,
-                          child: Container(
-                            constraints: BoxConstraints(
-                                maxWidth: boxConstraints.maxWidth - 90),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.black38),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                WidgetShowProfile(
-                                    urlImage: appController
-                                        .referanceModels[index]
-                                        .urlImageTechnic),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Column(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
+          return Obx(() {
+            return appController.referanceModels.isEmpty
+                ? const SizedBox()
+                : PageView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: appController.referanceModels.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () =>
+                          FocusManager.instance.primaryFocus?.unfocus(),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                constraints: BoxConstraints(
+                                    maxWidth: boxConstraints.maxWidth - 90),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.black38),
+                                child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width: boxConstraints.maxWidth * 0.55,
-                                      child: WidgetText(
-                                        text: appController
-                                            .referanceModels[index].nameTechnic,
-                                        textStyle: AppConstant()
-                                            .h2Style(color: Colors.white),
-                                      ),
+                                    WidgetShowProfile(
+                                        urlImage: appController
+                                            .referanceModels[index]
+                                            .urlImageTechnic),
+                                    const SizedBox(
+                                      width: 8,
                                     ),
-                                    SizedBox(
-                                      width: boxConstraints.maxWidth * 0.55,
-                                      child: WidgetText(
-                                        text: appController
-                                            .referanceModels[index].nameJob,
-                                        textStyle: AppConstant().h3Style(
-                                            color: Colors.amber,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: boxConstraints.maxWidth * 0.55,
-                                      child: WidgetText(
-                                        text: appController
-                                            .referanceModels[index].detail,
-                                        textStyle: AppConstant()
-                                            .h3Style(color: Colors.red),
-                                      ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // ชื่อ
+                                        SizedBox(
+                                          width: boxConstraints.maxWidth * 0.55,
+                                          child: WidgetText(
+                                            text: appController
+                                                .referanceModels[index]
+                                                .nameTechnic,
+                                            textStyle: AppConstant()
+                                                .h2Style(color: Colors.white),
+                                          ),
+                                        ),
+                                        // ชื่องาน
+                                        SizedBox(
+                                          width: boxConstraints.maxWidth * 0.55,
+                                          child: WidgetText(
+                                            text: appController
+                                                .referanceModels[index].nameJob,
+                                            textStyle: AppConstant().h3Style(
+                                                color: Colors.amber,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        // รายละเอียด
+                                        SizedBox(
+                                          width: boxConstraints.maxWidth * 0.55,
+                                          child: WidgetTextExpanable(
+                                            data: appController
+                                                .referanceModels[index].detail,
+                                            textStyle: AppConstant()
+                                                .h3Style(color: Colors.white),
+                                          ),
+                                        )
+                                      ],
                                     )
                                   ],
-                                )
-                              ],
+                                ),
+                              ),
+                              WidgetIconButton(
+                                iconData: Icons.home,
+                                pressFunc: () {
+                                  Get.offAllNamed('/navigator');
+                                },
+                                size: 48,
+                                iconColor: Colors.yellow,
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: WidgetImageInternet(
+                              urlPath:
+                                  appController.referanceModels[index].urlJob,
+                              // width: boxConstraints.maxWidth,
+                              // height: boxConstraints.maxHeight*0.5,
                             ),
                           ),
-                        ),
-                        Positioned(
-                          top: 48,
-                          right: 36,
-                          child: WidgetIconButton(
-                            iconData: Icons.home,
-                            pressFunc: () {
-                              Get.offAllNamed('/navigator');
-                            },
-                            size: 48,
-                            iconColor: Colors.yellow,
-                          ),
-                        ),
-                        // appController.postModels.isEmpty
-                        //     ? const SizedBox()
-                        //     : ListView.builder(padding: const EdgeInsets.only(top: 180, left: 32),
-                        //         physics: const ScrollPhysics(),
-                        //         shrinkWrap: true,
-                        //         itemCount: appController.postJobModels.length,
-                        //         itemBuilder: (context, index) => WidgetText(
-                        //           text: appController.postModels[index].post,
-                        //           textStyle: AppConstant()
-                        //               .h3Style(color: Colors.white),
-                        //         ),
-                        //       ),
-                      ],
+
+                          // appController.postModels.isEmpty
+                          //     ? const SizedBox()
+                          //     : ListView.builder(padding: const EdgeInsets.only(top: 180, left: 32),
+                          //         physics: const ScrollPhysics(),
+                          //         shrinkWrap: true,
+                          //         itemCount: appController.postJobModels.length,
+                          //         itemBuilder: (context, index) => WidgetText(
+                          //           text: appController.postModels[index].post,
+                          //           textStyle: AppConstant()
+                          //               .h3Style(color: Colors.white),
+                          //         ),
+                          //       ),
+                        ],
+                      ),
                     ),
-                  ),
-                  onPageChanged: (value) {
-                    appController.indexPage.value = value;
-                    appController.postModels.clear();
-                    AppService().readPost(
-                        docIdReferance: appController
-                            .docReferances[appController.indexPage.value]);
-                  },
-                );
-        });
-      }),
+                    onPageChanged: (value) {
+                      appController.indexPage.value = value;
+                      appController.postModels.clear();
+                      AppService().readPost(
+                          docIdReferance: appController
+                              .docReferances[appController.indexPage.value]);
+                    },
+                  );
+          });
+        }),
+      ),
       bottomSheet: Container(
         width: Get.width,
         decoration: const BoxDecoration(color: Colors.black),
