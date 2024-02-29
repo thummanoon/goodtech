@@ -30,21 +30,7 @@ import '../models/referance_modal.dart';
 class AppService {
   AppController appController = Get.put(AppController());
 
-  Future<void> readPost({required String docIdReferance}) async {
-    FirebaseFirestore.instance
-        .collection('referance')
-        .doc(docIdReferance)
-        .collection('post')
-        .get()
-        .then((value) {
-      if (value.docs.isNotEmpty) {
-        for (var element in value.docs) {
-          PostModel postModel = PostModel.fromMap(element.data());
-          appController.postModels.add(postModel);
-        }
-      }
-    });
-  }
+  
 
   Future<void> findUserModelLogin() async {
     var user = FirebaseAuth.instance.currentUser;

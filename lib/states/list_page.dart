@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -29,6 +31,9 @@ class _ListPageState extends State<ListPage> {
   PageController? pageController;
   TextEditingController textEditingController = TextEditingController();
 
+  late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>
+      streamSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -38,15 +43,44 @@ class _ListPageState extends State<ListPage> {
     });
 
     AppService().readFirstReferance().then((value) {
-      print(
-          '##28feb referenceModel ---> ${appController.referanceModels.length}');
-
       pageController =
           PageController(initialPage: appController.indexPage.value);
 
-      AppService().readPost(
+      realTimeReadPost(
           docIdReferance:
               appController.docReferances[appController.indexPage.value]);
+    });
+  }
+
+  @override
+  void dispose() {
+    streamSubscription.cancel();
+    super.dispose();
+  }
+
+  Future<void> realTimeReadPost({required String docIdReferance}) async {
+    print('##29feb docIdReferanct--> $docIdReferance');
+
+    if (appController.postModels.isNotEmpty) {
+      appController.postModels.clear();
+    }
+
+    streamSubscription = FirebaseFirestore.instance
+        .collection('referance')
+        .doc(docIdReferance)
+        .collection('post')
+        .orderBy('timestamp')
+        .snapshots()
+        .listen((event) {
+      if (event.docs.isNotEmpty) {
+        for (var element in event.docs) {
+          PostModel model = PostModel.fromMap(element.data());
+          appController.postModels.add(model);
+        }
+      }
+
+      print(
+          '##29feb ขนาดของ postModels --> ${appController.postModels.length}');
     });
   }
 
@@ -164,8 +198,8 @@ class _ListPageState extends State<ListPage> {
                     ),
                     onPageChanged: (value) {
                       appController.indexPage.value = value;
-                      appController.postModels.clear();
-                      AppService().readPost(
+
+                      realTimeReadPost(
                           docIdReferance: appController
                               .docReferances[appController.indexPage.value]);
                     },
@@ -240,14 +274,10 @@ class _ListPageState extends State<ListPage> {
                         .doc()
                         .set(postModel.toMap())
                         .then((value) {
-                          
                       print('### insert post Success');
                       textEditingController.text = '';
                     });
-
-
-
-                  }       //if
+                  } //if
                 }
               },
             )
