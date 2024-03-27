@@ -11,6 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:goodtech/models/chat_model.dart';
 import 'package:goodtech/models/check_payment_model.dart';
 import 'package:goodtech/models/message_model.dart';
 import 'package:goodtech/models/post_job_model.dart';
@@ -466,5 +467,28 @@ class AppService {
             exit(0);
           },
         ));
+  }
+
+  Future<void> processFindDocIdChat({
+    required String uidUserLogin,
+    required String uidFriend,
+  }) async {
+    await FirebaseFirestore.instance.collection('chat').get().then((value) {
+      if (appController.docIdChatMessages.isNotEmpty) {
+        appController.docIdChatMessages.clear();
+      }
+      for (var element in value.docs) {
+        ChatModel chatModel = ChatModel.fromMap(element.data());
+
+        //  เช็คว่ามี contains uidUserLogin
+        if (chatModel.friends.contains(uidUserLogin)) {
+          if (chatModel.friends.contains(uidFriend)) {
+            String docIdChat = element.id;
+            print('##docIdChat ---> $docIdChat');
+            appController.docIdChatMessages.add(docIdChat);
+          }
+        }
+      }
+    });
   }
 }

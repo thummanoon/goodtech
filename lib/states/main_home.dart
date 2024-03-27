@@ -13,7 +13,6 @@ import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/utility/app_service.dart';
-import 'package:goodtech/widgets/widget_buttom.dart';
 import 'package:goodtech/widgets/widget_icon_button.dart';
 import 'package:goodtech/widgets/widget_image.dart';
 import 'package:goodtech/widgets/widget_menu.dart';
@@ -91,25 +90,29 @@ class _MainHomeState extends State<MainHome> {
           print('current userModel ---> ${appController.userModelLogins}');
           return Scaffold(
             backgroundColor: AppConstant.bgColor,
-            appBar: AppBar(
-              title: WidgetText(
-                text: titles[appController.indexBody.value],
-                textStyle: AppConstant().h2Style(),
-              ),
-              actions: [
-                WidgetIconButton(
-                  iconData: Icons.fact_check,
-                  pressFunc: () {
-                    Get.offAll(const ListPage());
-                  },
-                  tooltip: 'ผลงานช่าง',
-                )
-              ],
-            ),
+            appBar: mainAppbar(appController),
             drawer: load ? const WidgetProgress() : mainDrawer(appController),
             body: bodys[appController.indexBody.value],
           );
         });
+  }
+
+  AppBar mainAppbar(AppController appController) {
+    return AppBar(
+            title: WidgetText(
+              text: titles[appController.indexBody.value],
+              textStyle: AppConstant().h2Style(),
+            ),
+            actions: [
+              WidgetIconButton(
+                iconData: Icons.fact_check,
+                pressFunc: () {
+                  Get.offAll(const ListPage());
+                },
+                tooltip: 'ผลงานช่าง',
+              )
+            ],
+          );
   }
 
   Drawer mainDrawer(AppController appController) {

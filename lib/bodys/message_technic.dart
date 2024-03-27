@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goodtech/states/chat_page_technic.dart';
 import 'package:goodtech/states/payment_page.dart';
-import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/utility/app_service.dart';
@@ -41,47 +40,69 @@ class _MessageTechnicState extends State<MessageTechnic> {
               : ListView.builder(
                   itemCount: appController.chatModelUserTechnic.length,
                   itemBuilder: (context, index) => WidgetMenu(
-                    leadWidget: Icon(Icons.message),
+                    leadWidget: const Icon(Icons.message),
                     title: appController.nameUserOrTechnics[index],
                     subTitle: WidgetText(text: appController.lastMessages.last),
                     tapFunc: () {
-                      var docIdChats =
-                          appController.userModelLogins.last.docIdChats;
-                      print('##6jan docIdChats --> $docIdChats');
+                      //  uid ของเพื่อน
+                      String uidFriend = appController
+                          .chatModelUserTechnic.last.friends[index];
 
-                      String money = appController.userModelLogins.last.money!;
+                      //  uid ของเราเอง
+                      var user = FirebaseAuth.instance.currentUser;
+                      String uidUserLogin = user!.uid;
 
-                      if (money.isEmpty) {
-                        dialogRequire(context);
-                      } else if (double.parse(money) < 32.10) {
-                        dialogRequire(context,
-                            title: 'จำนวนเงินในกระเป๋าเงินไม่พอ',
-                            detail: 'กรุณาเติมเงิน',
-                            label: 'เติมเงิน');
-                      } else if (docIdChats!.isEmpty) {
-                        // ยังไม่เคยคุยกับใครเลย
-                        dialogPayMoney(context, money, appController, index);
-                      } else {
-                        // check ว่า  user เคยคุยด้วยไหม ?
+                      print(
+                          '## uidFriend = $uidFriend, uidUserLogin = $uidUserLogin');
 
-                        String docIdChat =
-                            appController.docIdChatUserTechnics.last;
+                      AppService()
+                          .processFindDocIdChat(
+                              uidUserLogin: uidUserLogin, uidFriend: uidFriend)
+                          .then((value) {
+                        Get.to(ChatPaeTechnic(
+                          docIdChat: appController.docIdChatMessages.last,
+                          nameUser: appController.nameUserOrTechnics[index],
+                        ));
+                      });
 
-                        if (appController.userModelLogins.last.docIdChats!
-                            .contains(docIdChat)) {
-                          print(
-                              '##6jan Check ว่า user เคยคุยด้วยไหม เคยคุยกันแล้ว ');
+                      // นี่คือโค๊ดเก่า
+                      // var docIdChats =
+                      //     appController.userModelLogins.last.docIdChats;
+                      // print('##6jan docIdChats --> $docIdChats');
 
-                          Get.to(ChatPaeTechnic(
-                            docIdChat: docIdChat,
-                            nameUser: appController.nameUserOrTechnics[index],
-                          ));
-                        } else {
-                          print(
-                              '##6jan Check ว่า user เคยคุยด้วยไหม  ไม่เคยคุยกัน ');
-                          dialogPayMoney(context, money, appController, index);
-                        }
-                      }
+                      // String money = appController.userModelLogins.last.money!;
+
+                      // if (money.isEmpty) {
+                      //   dialogRequire(context);
+                      // } else if (double.parse(money) < 32.10) {
+                      //   dialogRequire(context,
+                      //       title: 'จำนวนเงินในกระเป๋าเงินไม่พอ',
+                      //       detail: 'กรุณาเติมเงิน',
+                      //       label: 'เติมเงิน');
+                      // } else if (docIdChats!.isEmpty) {
+                      //   // ยังไม่เคยคุยกับใครเลย
+                      //   dialogPayMoney(context, money, appController, index);
+                      // } else {
+                      //   // check ว่า  user เคยคุยด้วยไหม ?
+
+                      //   String docIdChat =
+                      //       appController.docIdChatUserTechnics.last;
+
+                      //   if (appController.userModelLogins.last.docIdChats!
+                      //       .contains(docIdChat)) {
+                      //     print(
+                      //         '##6jan Check ว่า user เคยคุยด้วยไหม เคยคุยกันแล้ว ');
+
+                      //     Get.to(ChatPaeTechnic(
+                      //       docIdChat: docIdChat,
+                      //       nameUser: appController.nameUserOrTechnics[index],
+                      //     ));
+                      //   } else {
+                      //     print(
+                      //         '##6jan Check ว่า user เคยคุยด้วยไหม  ไม่เคยคุยกัน ');
+                      //     dialogPayMoney(context, money, appController, index);
+                      //   }
+                      // }
                     },
                   ),
                 );
@@ -108,7 +129,7 @@ class _MessageTechnicState extends State<MessageTechnic> {
           },
         ));
   }
-  //อัพเดต 
+  //อัพเดต
 
   void dialogRequire(BuildContext context,
       {String? title, String? detail, String? label}) {

@@ -61,6 +61,12 @@ class AppController extends GetxController {
   RxInt indexPage = 0.obs;
   RxList<PostModel> postModels = <PostModel>[].obs;
 
+  RxList<String> docIdChatMessages = <String>[].obs;
+
+
+
+  
+
   Future<void> readChatModelForUser() async {
     if (chatModels.isNotEmpty) {
       chatModels.clear();

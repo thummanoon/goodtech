@@ -10,7 +10,6 @@ import 'package:goodtech/utility/app_service.dart';
 import 'package:goodtech/widgets/widget_buttom.dart';
 import 'package:goodtech/widgets/widget_calculate_distance.dart';
 import 'package:goodtech/widgets/widget_form.dart';
-import 'package:goodtech/widgets/widget_icon_button.dart';
 import 'package:goodtech/widgets/widget_text.dart';
 
 class ChatPaeTechnic extends StatefulWidget {
@@ -46,9 +45,7 @@ class _ChatPaeTechnicState extends State<ChatPaeTechnic> {
           text: widget.nameUser,
           textStyle: AppConstant().h2Style(),
         ),
-        actions: [
-          WidgetCalcualteDistance()
-        ],
+        actions: [WidgetCalcualteDistance()],
       ),
       body: LayoutBuilder(builder: (context, BoxConstraints boxConstraints) {
         return GetX(
@@ -60,64 +57,67 @@ class _ChatPaeTechnicState extends State<ChatPaeTechnic> {
               return appController.messageModels.isEmpty
                   ? const SizedBox()
                   : SizedBox(
-                      width: boxConstraints.maxHeight,
+                      width: boxConstraints.maxWidth,
                       height: boxConstraints.maxHeight,
-                      child: Stack(
-                        children: [
-                          SizedBox(
-                            height: boxConstraints.maxHeight - 60,
-                            child: ListMessageChat(appController),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            child: SizedBox(
-                              width: boxConstraints.maxWidth,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  WidgetForm(
-                                    textEditingController:
-                                        textEditingController,
-                                    hint: 'ข้อความ',
-                                    marginTop: 0,
-                                    changeFunc: (p0) {},
-                                  ),
-                                  WidgetButtom(
-                                    label: 'ส่งข้อความ',
-                                    pressFunc: () {
-                                      print(
-                                          '##7jan text --> ${textEditingController.text}');
-
-                                      if (textEditingController.text.isEmpty) {
-                                        AppDialog(context: context)
-                                            .normalDialog(
-                                                title: 'ไม่มีข้อความ',
-                                                detail: 'กรุณากรอกข้อความด้วย');
-                                      } else {
-                                        MessageModel messageModel =
-                                            MessageModel(
-                                                message:
-                                                    textEditingController.text,
-                                                uidPost: appController
-                                                    .uidLogins.last,
-                                                timestamp: Timestamp.fromDate(
-                                                    DateTime.now()));
-
-                                        AppService()
-                                            .insertMessage(
-                                                messageModel: messageModel)
-                                            .then((value) {
-                                          textEditingController.text = '';
-                                        });
-                                      }
-                                    },
-                                  )
-                                ],
-                              ),
+                      child: GestureDetector(onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            SizedBox(
+                              height: boxConstraints.maxHeight - 60,
+                              child: ListMessageChat(appController),
                             ),
-                          )
-                        ],
+                            Positioned(
+                              bottom: 0,
+                              child: SizedBox(
+                                width: boxConstraints.maxWidth,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    WidgetForm(width: 240,
+                                      textEditingController:
+                                          textEditingController,
+                                      hint: 'ข้อความ',
+                                      marginTop: 0,
+                                      changeFunc: (p0) {},
+                                    ),
+                                    WidgetButtom(
+                                      label: 'ส่งข้อความ',
+                                      pressFunc: () {
+                                        print(
+                                            '##7jan text --> ${textEditingController.text}');
+                        
+                                        if (textEditingController.text.isEmpty) {
+                                          AppDialog(context: context)
+                                              .normalDialog(
+                                                  title: 'ไม่มีข้อความ',
+                                                  detail: 'กรุณากรอกข้อความด้วย');
+                                        } else {
+                                          MessageModel messageModel =
+                                              MessageModel(
+                                                  message:
+                                                      textEditingController.text,
+                                                  uidPost: appController
+                                                      .uidLogins.last,
+                                                  timestamp: Timestamp.fromDate(
+                                                      DateTime.now()));
+                        
+                                          AppService()
+                                              .insertMessage(
+                                                  messageModel: messageModel)
+                                              .then((value) {
+                                            textEditingController.text = '';
+                                          });
+                                        }
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     );
             });
@@ -157,5 +157,3 @@ class _ChatPaeTechnicState extends State<ChatPaeTechnic> {
     );
   }
 }
-
-
