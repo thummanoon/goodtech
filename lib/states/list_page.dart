@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,6 @@ import 'package:goodtech/utility/app_constant.dart';
 import 'package:goodtech/utility/app_controller.dart';
 import 'package:goodtech/utility/app_dialog.dart';
 import 'package:goodtech/utility/app_service.dart';
-import 'package:goodtech/widgets/widget_buttom.dart';
 import 'package:goodtech/widgets/widget_form.dart';
 import 'package:goodtech/widgets/widget_icon_button.dart';
 import 'package:goodtech/widgets/widget_image_internet.dart';
@@ -232,6 +230,22 @@ class _ListPageState extends State<ListPage> {
                                           ),
                                   );
                                 }),
+                                Positioned(
+                                  right: 16,
+                                  bottom: Get.height * 0.3,
+                                  child: Column(mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      WidgetIconButton(
+                                        iconColor: Colors.pink,
+                                        iconData: Icons.favorite,
+                                        pressFunc: () {
+                                          print('You tap');
+                                        },
+                                      ),
+                                      WidgetText(text: '123', textStyle: AppConstant().h3Style(color: Colors.white, fontWeight: FontWeight.w700),)
+                                    ],
+                                  ),
+                                )
                               ],
                             ),
                           ),
