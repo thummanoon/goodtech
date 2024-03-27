@@ -129,7 +129,7 @@ class _MainHomeState extends State<MainHome> {
             },
           ),
           statusLogin!
-              ? appController.userModelLogins[0].typeUser ==
+              ? appController.userModelLogins.isEmpty ? const SizedBox() : appController.userModelLogins[0].typeUser ==
                       AppConstant.typeUsers[1]
                   ? Column(
                       mainAxisSize: MainAxisSize.min,

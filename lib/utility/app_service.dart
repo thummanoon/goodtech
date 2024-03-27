@@ -30,8 +30,6 @@ import '../models/referance_modal.dart';
 class AppService {
   AppController appController = Get.put(AppController());
 
-  
-
   Future<void> findUserModelLogin() async {
     var user = FirebaseAuth.instance.currentUser;
 
@@ -226,6 +224,27 @@ class AppService {
     });
   }
 
+  Future<void> processSendNotiByUid(
+      {required String title,
+      required String body,
+      required String uid}) async {
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(uid)
+        .get()
+        .then((value) async {
+      if (value.data() != null) {
+        UserModel userModel = UserModel.fromMap(value.data()!);
+
+        String urlAPI =
+            'https://www.androidthai.in.th/fluttertraining/noti/apiNotiThummanoon.php?isAdd=true&token=${userModel.token}&title=$title&body=$body';
+        await Dio().get(urlAPI).then((value) {
+          print('##28dec Sent Noti Success');
+        });
+      }
+    });
+  }
+
   Future<void> insertMessage({required MessageModel messageModel}) async {
     AppController appController = Get.put(AppController());
     await FirebaseFirestore.instance
@@ -265,20 +284,22 @@ class AppService {
   Future<void> processUploadToken({required String token}) async {
     AppController appController = Get.put(AppController());
 
-    Map<String, dynamic> map = appController.userModelLogins.last.toMap();
-    print('##25dec map --> $map');
+    await findUserModelLogin().then((value) async {
+      Map<String, dynamic> map = appController.userModelLogins.last.toMap();
+      print('##25dec map --> $map');
 
-    map['token'] = token;
-    String docIdUser = appController.uidLogins.last;
-    print('##25dec map update token --> $map');
-    print('##25dec docIdUser --> $docIdUser');
+      map['token'] = token;
+      String docIdUser = appController.uidLogins.last;
+      print('##25dec map update token --> $map');
+      print('##25dec docIdUser --> $docIdUser');
 
-    await FirebaseFirestore.instance
-        .collection('user')
-        .doc(docIdUser)
-        .update(map)
-        .then((value) {
-      print('##25dec Success Update');
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(docIdUser)
+          .update(map)
+          .then((value) {
+        print('##25dec Success Update');
+      });
     });
   }
 

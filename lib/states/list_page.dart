@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -61,17 +62,17 @@ class _ListPageState extends State<ListPage> {
   Future<void> realTimeReadPost({required String docIdReferance}) async {
     print('##29feb docIdReferanct--> $docIdReferance');
 
-    if (appController.postModels.isNotEmpty) {
-      appController.postModels.clear();
-    }
-
     streamSubscription = FirebaseFirestore.instance
         .collection('referance')
         .doc(docIdReferance)
         .collection('post')
-        .orderBy('timestamp')
+        .orderBy('timestamp', descending: true)
         .snapshots()
         .listen((event) {
+      if (appController.postModels.isNotEmpty) {
+        appController.postModels.clear();
+      }
+
       if (event.docs.isNotEmpty) {
         for (var element in event.docs) {
           PostModel model = PostModel.fromMap(element.data());
@@ -173,11 +174,65 @@ class _ListPageState extends State<ListPage> {
                             ],
                           ),
                           Expanded(
-                            child: WidgetImageInternet(
-                              urlPath:
-                                  appController.referanceModels[index].urlJob,
-                              // width: boxConstraints.maxWidth,
-                              // height: boxConstraints.maxHeight*0.5,
+                            child: Stack(
+                              children: [
+                                WidgetImageInternet(
+                                  urlPath: appController
+                                      .referanceModels[index].urlJob,
+                                ),
+                                Obx(() {
+                                  return Positioned(
+                                    left: 16,
+                                    top: Get.height * 0.5,
+                                    child: appController.postModels.isEmpty
+                                        ? const SizedBox()
+                                        : Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 16),
+                                            width: Get.width * 0.6,
+                                            height: Get.height * 0.3,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                color: Colors.black38),
+                                            child: ListView.builder(
+                                              reverse: true,
+                                              shrinkWrap: true,
+                                              physics: const ScrollPhysics(),
+                                              itemCount: appController
+                                                  .postModels.length,
+                                              itemBuilder: (context, index) =>
+                                                  Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  WidgetText(
+                                                    text: appController
+                                                        .postModels[index]
+                                                        .mapPost['name'],
+                                                    textStyle: AppConstant()
+                                                        .h3Style(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.white),
+                                                  ),
+                                                  WidgetText(
+                                                    text: appController
+                                                        .postModels[index].post,
+                                                    textStyle: AppConstant()
+                                                        .h3Style(
+                                                            color:
+                                                                Colors.amber),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                  );
+                                }),
+                              ],
                             ),
                           ),
 
@@ -197,6 +252,8 @@ class _ListPageState extends State<ListPage> {
                       ),
                     ),
                     onPageChanged: (value) {
+                      streamSubscription.cancel();
+
                       appController.indexPage.value = value;
 
                       realTimeReadPost(
@@ -276,6 +333,13 @@ class _ListPageState extends State<ListPage> {
                         .then((value) {
                       print('### insert post Success');
                       textEditingController.text = '';
+
+                      AppService().processSendNotiByUid(
+                          title: 'มีข้อความ',
+                          body: 'ดูข้อความ',
+                          uid: appController
+                              .referanceModels[appController.indexPage.value]
+                              .uidTechnic);
                     });
                   } //if
                 }
